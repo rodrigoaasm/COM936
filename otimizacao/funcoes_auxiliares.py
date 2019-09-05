@@ -26,3 +26,9 @@ def entrada_dados():
 def saida_dados(text, tipo):
     np.savetxt('result_%s.txt' % tipo, text, fmt="%s")
     return
+
+def calcula_cxb():
+    dados_plantas['cxb'] = []
+    for i in range(0, len(dados_plantas['custo'])):
+        dados_plantas['cxb'][i] = dados_plantas['capacidade'][i] /\
+                                  dados_plantas['custo'][i]

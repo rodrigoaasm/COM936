@@ -8,6 +8,7 @@ from solucao import *
 
 if __name__ == '__main__':
     entrada_dados()
+    calcula_cxb()
     hora_inicio = time()
 
     criaSolInicial()
