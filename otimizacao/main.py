@@ -13,7 +13,9 @@ if __name__ == '__main__':
 
     criaSolInicial()
     calcula_funcao_objetivo()
-    encontra_menor_demanda()
+
+
+    #encontra_menor_demanda()
 
     hora_fim = time()
 

@@ -17,8 +17,26 @@ def calcula_funcao_objetivo():
 
     print("Custo: %d" %(valor))
 
-
 def criaSolInicial():
+    if estrategia:
+        solucao = globals()['_solucao_%s' % estrategia]
+        solucao()
+    else:
+        _solucao_padrao()
+
+def _solucao_gulosa():
+    print ('solucao gulosa')
+    raise NotImplemented()
+
+def _solucao_aleatoria():
+    print('solucao aleatoria')
+    raise NotImplemented()
+
+def _solucao_hibrida():
+    print('solucao hibrida')
+    raise NotImplemented()
+
+def _solucao_padrao():
     insta = 0
     qtdDemandaInsta = dados_plantas['capacidade'][0]
     for i in range(0, len(dados_clientes['demanda'])):
@@ -33,8 +51,6 @@ def criaSolInicial():
 
     for i in range(0, len(dados_clientes['demanda'])):
         print("Cliente %d" % (solucao[i]))
-
-
 def otimizaSolucao():
     maior = 0
 
