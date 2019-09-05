@@ -30,5 +30,5 @@ def saida_dados(text, tipo):
 def calcula_cxb():
     dados_plantas['cxb'] = []
     for i in range(0, len(dados_plantas['custo'])):
-        dados_plantas['cxb'][i] = dados_plantas['capacidade'][i] /\
-                                  dados_plantas['custo'][i]
+        dados_plantas['cxb'].append(dados_plantas['capacidade'][i] /
+                                  dados_plantas['custo'][i])
