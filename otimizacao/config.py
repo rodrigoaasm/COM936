@@ -1,7 +1,10 @@
 dados_clientes = {
     'custo': [],
     'demanda': [],
+    'disponivel': [],
+    'posicao': []
 }
+
 
 dados_plantas = {
     'custo': [],
