@@ -77,6 +77,7 @@ def _solucao_hibrida():
     raise NotImplemented()
 
 def _solucao_padrao():
+
     insta = 0
     qtdDemandaInsta = dados_plantas['capacidade'][0]
     for i in range(0, len(dados_clientes['demanda'])):

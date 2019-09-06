@@ -1,8 +1,8 @@
 dados_clientes = {
     'custo': [],
     'demanda': [],
-    'disponivel': [],
-    'posicao': []
+    'posicao': [],
+    'disponivel': []
 }
 
 
