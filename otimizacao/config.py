@@ -1,14 +1,14 @@
 dados_clientes = {
     'custo': [],
     'demanda': [],
-    'posicao': [],
-    'disponivel': []
+    'disponivel': [],
+    'posicao': []
 }
-
 
 dados_plantas = {
     'custo': [],
-    'capacidade': []
+    'capacidade': [],
+    'posicao': []
 }
 
 solucao = []

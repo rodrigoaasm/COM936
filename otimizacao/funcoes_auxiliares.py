@@ -12,14 +12,15 @@ def entrada_dados():
             cliente = data.pop(0)
             dados_clientes['custo'].append(
                 [int(float(cli)) for cli in cliente.split()])
-            [dados_clientes['disponivel'].append(1)]
             [dados_clientes['posicao'].append(i)]
+            [dados_clientes['disponivel'].append(1)]
         n_linhas_array_clientes = int(n_clientes / n_plantas)
         for i in range(0, n_linhas_array_clientes):
             demanda = data.pop(0)
             [dados_clientes['demanda'].append(
                 int(float(dem))) for dem in demanda.split()]
-            [dados_clientes['disponivel'].append(1)]
+        for i in range(0, n_plantas):
+            [dados_plantas['posicao'].append(i)]
 
         dados_plantas['custo'] = [
             int(float(cus)) for cus in data.pop(0).split()]
