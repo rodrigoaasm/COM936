@@ -37,3 +37,21 @@ def calcula_cxb():
     for i in range(0, len(dados_plantas['custo'])):
         dados_plantas['cxb'].append(dados_plantas['capacidade'][i] /
                                   dados_plantas['custo'][i])
+
+def saida_dados_format(result):
+    file = open("saidas/result_solucoes","w")
+    for i in range(0,len(result)):
+        file.write("%d : %s \n" %(i, result[i] ))
+    file.close()
+    return
+
+def formataSaida(unform_sol):
+    listFormat = []
+    for i in range(0,len(unform_sol)):
+        try:
+            listFormat[unform_sol[i]].append(i)
+        except:
+            listFormat.append([])
+            listFormat[unform_sol[i]].append(i)
+
+    return (listFormat)
