@@ -1,4 +1,5 @@
 from config import *
+import copy
 
 def encontra_menor_demanda():
     menor = 0
@@ -13,12 +14,12 @@ def calcula_funcao_objetivo():
     valor = 0
     insta = [] #vetor que guardará as instalações já somadas aos custos, para que não se repitam
     for i in range(0, len(solucao)):
+        posInsta = dados_plantas['posicao'].index(solucao[i])#como o vetor de solucao armazena a posicao original das instalacoes, deve-se buscar sua posicao no array de posicao, visto que a posicao original pode nao ser a atual
         if not insta.__contains__(solucao[i]):#verifica se a instalação já foi atribuida, senao considera seu valor
-            valor += dados_plantas['custo'][solucao[i]]  # atribui ao valor, o custo de abertura de cada instalação
+            valor += dados_plantas['custo'][posInsta]  # atribui ao valor, o custo de abertura de cada instalação
             insta.append(solucao[i]) # e a insere no vetor de instalações, para que seu valor não seja contado novamente
 
         valor += dados_clientes['custo'][i][solucao[i]] #considera o custo de alocacao de cada cliente para cada instalação
-
     print("Custo total: %d" %(valor))
 
 def criaSolInicial():
@@ -69,6 +70,7 @@ def trocaValores(oldPos, newPos, tipo):
         dados_clientes['demanda'][oldPos], dados_clientes['demanda'][newPos] = dados_clientes['demanda'][newPos], dados_clientes['demanda'][oldPos]
         dados_clientes['posicao'][oldPos], dados_clientes['posicao'][newPos] = dados_clientes['posicao'][newPos],dados_clientes['posicao'][oldPos]
         dados_clientes['disponivel'][oldPos], dados_clientes['disponivel'][newPos] = dados_clientes['disponivel'][newPos], dados_clientes['disponivel'][oldPos]
+        #print(" Cliente old: %d - custo: %d, Cliente new: %d - custo: %d"%(oldPos, dados_clientes['custo'][oldPos][tipo], newPos,dados_clientes['custo'][newPos][tipo]))
         dados_clientes['custo'][oldPos][tipo], dados_clientes['custo'][newPos][tipo] = \
             dados_clientes['custo'][newPos][tipo], dados_clientes['custo'][oldPos][tipo]
 
@@ -83,6 +85,7 @@ def _solucao_gulosa():
     instalacao = 0 #ira pegar a instalação da posição inicial
     quickSort(-1, 0, len(dados_plantas['capacidade'])-1) #ordena o instalações pelo custo
     qtdDemandaInsta = dados_plantas['capacidade'][0] #atribui a demanda a qtdDemandaInsta, pois ela sera utilizada para testar se uma instalação tem capacidade para atender determinado cliente
+    copiaDadosClientes = copy.deepcopy(dict(dados_clientes))
 
     #for i in range(0, len(dados_plantas['capacidade'])):#apenas demonstra que foi feito a ordenação de forma correta, retirar depois
      #   print(" Instalacao - %d - capacidade %d - custo %d" %(dados_plantas['posicao'][i], dados_plantas['capacidade'][i], dados_plantas['custo'][i]))
@@ -94,7 +97,7 @@ def _solucao_gulosa():
         quickSort(dados_plantas['posicao'][instalacao], 0, qtdClientes-1) #ordena os clientes em função do custo com relação a instalação analisada
 
         #for k in range(0, qtdClientes):
-        #    print(" Instalação: %d - Cliente: %d - Custo: %d - Demanda: %d" %(dados_plantas['posicao'][instalacao], dados_clientes['posicao'][k], dados_clientes['custo'][k][dados_plantas['posicao'][instalacao]], dados_clientes['demanda'][k]))
+         #   print(" Instalação: %d - Cliente: %d - Custo: %d - Demanda: %d" %(dados_plantas['posicao'][instalacao], dados_clientes['posicao'][k], dados_clientes['custo'][k][dados_plantas['posicao'][instalacao]], dados_clientes['demanda'][k]))
 
         clienteAnalisado = 0 #inicia o contador que guardara a posição do cliente analisado
         #Se a instalação não tiver capacidade suficiente para atender o cliente ou o cliente já estiver alocado irá passar para o próximo cliente
@@ -111,7 +114,11 @@ def _solucao_gulosa():
             i += 1 #marca que mais um cliente foi inserido
         else: #caso a instalação não seja capaz de atender mais nenhum cliente
             instalacao += 1 #uma nova instalação deverá ser aberta
-            qtdDemandaInsta = dados_plantas['capacidade'][dados_plantas['posicao'][instalacao]] #quantia das demandas é atualizado pela quantia dessa nova instalação
+            qtdDemandaInsta = dados_plantas['capacidade'][instalacao] #quantia das demandas é atualizado pela quantia dessa nova instalação
+
+    dados_clientes['custo'] = copiaDadosClientes['custo']
+    dados_clientes['posicao'] = copiaDadosClientes['posicao']
+    dados_clientes['demanda'] = copiaDadosClientes['demanda']
 
     for i in range(0, len(solucao)): #printa a solução obtida
         print(" Clientes: %d - %d"%(i, solucao[i]))
@@ -145,5 +152,3 @@ def _solucao_padrao():
 
 def otimizaSolucao():
     maior = 0
-
-1
