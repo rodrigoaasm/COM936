@@ -88,8 +88,8 @@ def _solucao_gulosa():
     qtdClientes = len(dados_clientes['demanda']) #recebe a quantia de clientes armazenadas no dictionary
     while i < qtdClientes: #enquanto todos os clientes não forem inseridos não irá parar
         quickSort(dados_plantas['posicao'][instalacao], 0, qtdClientes-1) #ordena os clientes em função do custo com relação a instalação analisada
-        for k in range(0, qtdClientes):
-            print(" Instalação: %d - Cliente: %d - Custo: %d - Demanda: %d" %(dados_plantas['posicao'][instalacao], dados_clientes['posicao'][k], dados_clientes['custo'][k][dados_plantas['posicao'][instalacao]], dados_clientes['demanda'][k]))
+        #for k in range(0, qtdClientes):
+         #   print(" Instalação: %d - Cliente: %d - Custo: %d - Demanda: %d" %(dados_plantas['posicao'][instalacao], dados_clientes['posicao'][k], dados_clientes['custo'][k][dados_plantas['posicao'][instalacao]], dados_clientes['demanda'][k]))
         clienteAnalisado = 0 #inicia o contador que guardara a posição do cliente analisado
         #Se a instalação não tiver capacidade suficiente para atender o cliente ou o cliente já estiver alocado irá passar para o próximo cliente
         while qtdDemandaInsta < dados_clientes['demanda'][clienteAnalisado] or dados_clientes['disponivel'][clienteAnalisado] == 0:
