@@ -69,7 +69,6 @@ def trocaValores(oldPos, newPos, tipo):
         dados_clientes['demanda'][oldPos], dados_clientes['demanda'][newPos] = dados_clientes['demanda'][newPos], dados_clientes['demanda'][oldPos]
         dados_clientes['posicao'][oldPos], dados_clientes['posicao'][newPos] = dados_clientes['posicao'][newPos],dados_clientes['posicao'][oldPos]
         dados_clientes['disponivel'][oldPos], dados_clientes['disponivel'][newPos] = dados_clientes['disponivel'][newPos], dados_clientes['disponivel'][oldPos]
-        #print(" Cliente old: %d - custo: %d, Cliente new: %d - custo: %d"%(oldPos, dados_clientes['custo'][oldPos][tipo], newPos,dados_clientes['custo'][newPos][tipo]))
         dados_clientes['custo'][oldPos][tipo], dados_clientes['custo'][newPos][tipo] = \
             dados_clientes['custo'][newPos][tipo], dados_clientes['custo'][oldPos][tipo]
 
