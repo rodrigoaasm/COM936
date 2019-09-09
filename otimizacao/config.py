@@ -23,4 +23,4 @@ caminho = "../dataset/" + inst + ".txt"
 #   'aleatoria'
 #   'hibrida'
 
-estrategia = 'gulosa'
+estrategia = 'aleatoria'

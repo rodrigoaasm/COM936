@@ -1,5 +1,7 @@
 from config import *
 import copy
+import random
+
 
 def encontra_menor_demanda():
     menor = 0
@@ -8,6 +10,7 @@ def encontra_menor_demanda():
             menor = i
     print('Menor demanda - Cliente: %s / Valor: %s'
           % (menor + 1, dados_clientes['demanda'][menor]))
+
 
 #Função que calcula a função objetivo, ou seja, o custo de abertura das instalações mais de alocação de cada cliente
 def calcula_funcao_objetivo():
@@ -22,6 +25,7 @@ def calcula_funcao_objetivo():
         valor += dados_clientes['custo'][i][solucao[i]] #considera o custo de alocacao de cada cliente para cada instalação
     print("Custo total: %d" %(valor))
 
+
 def criaSolInicial():
     _iniSolucao()
     if estrategia:
@@ -29,6 +33,7 @@ def criaSolInicial():
         solucao()
     else:
          _solucao_padrao()
+
 
 #Função de partição do quicksort
 def partition(tipo, ini, fim):
@@ -44,6 +49,7 @@ def partition(tipo, ini, fim):
     trocaValores(pos, ini, tipo)
     return pos #retorna pivo
 
+
 #Chamada da função quick que permite as subdivisõs
 #Tipo simbolizará se quick é para ordenar clientes ou instalações
 #caso esteja menor do que 0 será para instalações, e se for maior será para clientes
@@ -54,12 +60,14 @@ def quickSort(tipo, ini, fim):
         quickSort(tipo, ini, pi - 1)
         quickSort(tipo, pi + 1, fim)
 
+
 #Pega um valor expecifico de qualquer dicionario, de forma a ser genérico
 def getValor(tipo, pos):#tipo terá duas funcionalidades, 1- dizer se é para cliente ou para instalacoes
     if tipo == -1: #caso seja para clientes, ele guardará a posição do cliente que está sendo manipulado
         return dados_plantas['custo'][pos]
     else:
         return dados_clientes['custo'][pos][tipo]
+
 
 def trocaValores(oldPos, newPos, tipo):
     if tipo == -1: #Troca valores do dictionary de plantas, sendo que eles deveram estar em oldPos e newPos
@@ -74,10 +82,12 @@ def trocaValores(oldPos, newPos, tipo):
         dados_clientes['custo'][oldPos][tipo], dados_clientes['custo'][newPos][tipo] = \
             dados_clientes['custo'][newPos][tipo], dados_clientes['custo'][oldPos][tipo]
 
+
 #Função que inicia o vetor que conterá a solução
 def _iniSolucao():
     for i in range(0, len(dados_clientes['demanda'])):
         solucao.append(0)
+
 
 def _solucao_gulosa():
     print('----------SOLUÇÃO GULOSA----------')
@@ -126,9 +136,35 @@ def _solucao_gulosa():
     return solucao
 
 
+def _cliente_cabe(clientes_planta, demanda_cliente, capacidade_planta):
+    total_planta = sum([cli for cli in clientes_planta])
+    if (total_planta + demanda_cliente) > \
+            capacidade_planta:
+        return False
+    return True
+
+
 def _solucao_aleatoria():
     print('solucao aleatoria')
-    raise NotImplemented()
+    capacidade_plantas = copy.deepcopy(dados_plantas['capacidade'])
+    demanda_clientes = copy.deepcopy(dados_clientes['demanda'])
+    clientes_planta = [[] for item in range(0, len(capacidade_plantas))]
+    idx_cliente = 0
+    random.seed('semente')
+    for cliente_pos in range(0, len(demanda_clientes)):
+        planta_pos = random.randrange(0, len(capacidade_plantas))
+        while not _cliente_cabe(clientes_planta[planta_pos],
+                                demanda_clientes[cliente_pos],
+                                capacidade_plantas[planta_pos]
+                                ):
+            planta_pos = random.randrange(0, len(capacidade_plantas))
+        clientes_planta[planta_pos].append(demanda_clientes[cliente_pos])
+    for planta_pos in range(0, len(clientes_planta)):
+        print('PLANTA {} POSSUI OS SEGUINTES CLIENTES: {}        \n'.format(
+            planta_pos,
+            clientes_planta[planta_pos])
+        )
+
 
 def _solucao_hibrida():
     print('solucao hibrida')
