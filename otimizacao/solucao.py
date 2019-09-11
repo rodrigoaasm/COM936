@@ -145,23 +145,30 @@ def _cliente_cabe(clientes_planta, demanda_cliente, capacidade_planta):
 
 
 def _solucao_aleatoria():
-    print('solucao aleatoria')
+    print('----------SOLUÇÃO ALEATÓRIA----------')
     capacidade_plantas = copy.deepcopy(dados_plantas['capacidade'])
     demanda_clientes = copy.deepcopy(dados_clientes['demanda'])
     clientes_planta = [[] for item in range(0, len(capacidade_plantas))]
-    idx_cliente = 0
     random.seed('semente')
-    for cliente_pos in range(0, len(demanda_clientes)):
+
+    clientes = [pos for pos in range(0, len(demanda_clientes))]
+    random.shuffle(clientes)
+
+    for cliente_pos in clientes:
         planta_pos = random.randrange(0, len(capacidade_plantas))
+        #TODO: Atribuir cliente a planta somente se não exceder a capacidade
         while not _cliente_cabe(clientes_planta[planta_pos],
                                 demanda_clientes[cliente_pos],
                                 capacidade_plantas[planta_pos]
                                 ):
             planta_pos = random.randrange(0, len(capacidade_plantas))
-        clientes_planta[planta_pos].append(demanda_clientes[cliente_pos])
+        clientes_planta[planta_pos].append(cliente_pos)
     for planta_pos in range(0, len(clientes_planta)):
-        print('PLANTA {} POSSUI OS SEGUINTES CLIENTES: {}        \n'.format(
+        print('PLANTA {}: \n   -Capacidade: {}\n   '
+              '-Usados: {}\n   -Clientes: {}\n\n'.format(
             planta_pos,
+            capacidade_plantas[planta_pos],
+            sum([demanda_clientes[i] for i in clientes_planta[planta_pos]]),
             clientes_planta[planta_pos])
         )
 
