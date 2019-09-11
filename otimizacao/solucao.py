@@ -137,9 +137,11 @@ def _solucao_gulosa():
 
 
 def _cliente_cabe(clientes_planta, demanda_cliente, capacidade_planta):
-    total_planta = sum([cli for cli in clientes_planta])
-    if (total_planta + demanda_cliente) > \
-            capacidade_planta:
+    demanda_clientes_planta = [dados_clientes['demanda'][cliente_pos] for
+                               cliente_pos in clientes_planta]
+    total_planta = sum(demanda_clientes_planta)
+    total_c_cliente = total_planta + demanda_cliente
+    if total_c_cliente > capacidade_planta:
         return False
     return True
 
