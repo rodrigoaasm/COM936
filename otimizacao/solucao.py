@@ -1,6 +1,7 @@
 from config import *
 import copy
 import random
+from time import time
 
 
 def encontra_menor_demanda():
@@ -28,11 +29,19 @@ def calcula_funcao_objetivo():
 
 def criaSolInicial():
     _iniSolucao()
-    if estrategia:
-        solucao = globals()['_solucao_%s' % estrategia]
-        solucao()
+    if estrategias:
+        for estrat in estrategias:
+            solucao = globals()['_solucao_%s' % estrat]
+            hora_inicio = time()
+            solucao()
+            hora_fim = time()
+            tempo_execucao = hora_fim - hora_inicio
+            hr, resto = divmod(tempo_execucao, 3600)
+            min, seg = divmod(resto, 60)
+
+            print('Tempo de execução da estratégia {}: {}ms'.format(estrat, seg/1000))
     else:
-         _solucao_padrao()
+        _solucao_padrao()
 
 
 #Função de partição do quicksort
@@ -154,25 +163,35 @@ def _solucao_aleatoria():
     random.seed('semente')
 
     clientes = [pos for pos in range(0, len(demanda_clientes))]
+    plantas = [pos for pos in range(0, len(capacidade_plantas))]
     random.shuffle(clientes)
+    random.shuffle(plantas)
 
+    idx_planta = 0
     for cliente_pos in clientes:
-        planta_pos = random.randrange(0, len(capacidade_plantas))
+        planta_pos = plantas[idx_planta]
         #TODO: Atribuir cliente a planta somente se não exceder a capacidade
         while not _cliente_cabe(clientes_planta[planta_pos],
                                 demanda_clientes[cliente_pos],
                                 capacidade_plantas[planta_pos]
                                 ):
-            planta_pos = random.randrange(0, len(capacidade_plantas))
+            idx_planta += 1
+            planta_pos = plantas[idx_planta]
         clientes_planta[planta_pos].append(cliente_pos)
+        custo_total = 0
     for planta_pos in range(0, len(clientes_planta)):
+        custo_planta = sum([demanda_clientes[i] for i in clientes_planta[planta_pos]])
+        custo_total += custo_planta
+        if clientes_planta[planta_pos]:
+            custo_total += dados_plantas['custo'][planta_pos]
         print('PLANTA {}: \n   -Capacidade: {}\n   '
               '-Usados: {}\n   -Clientes: {}\n\n'.format(
             planta_pos,
             capacidade_plantas[planta_pos],
-            sum([demanda_clientes[i] for i in clientes_planta[planta_pos]]),
+            custo_planta,
             clientes_planta[planta_pos])
         )
+    print('CUSTO TOTAL ALEATORIO: {}'.format(custo_total))
 
 
 def _solucao_hibrida():
