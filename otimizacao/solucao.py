@@ -39,7 +39,7 @@ def criaSolInicial():
             hr, resto = divmod(tempo_execucao, 3600)
             min, seg = divmod(resto, 60)
 
-            print('Tempo de execução da estratégia {}: {}ms'.format(estrat, seg/1000))
+            print('Tempo de execução da estratégia {}: {}ms'.format(estrat, seg * 1000))
     else:
         _solucao_padrao()
 
@@ -160,17 +160,16 @@ def _solucao_aleatoria():
     capacidade_plantas = copy.deepcopy(dados_plantas['capacidade'])
     demanda_clientes = copy.deepcopy(dados_clientes['demanda'])
     clientes_planta = [[] for item in range(0, len(capacidade_plantas))]
-    random.seed('semente')
+    random.seed('semente3')
 
     clientes = [pos for pos in range(0, len(demanda_clientes))]
     plantas = [pos for pos in range(0, len(capacidade_plantas))]
     random.shuffle(clientes)
     random.shuffle(plantas)
 
-    idx_planta = 0
     for cliente_pos in clientes:
+        idx_planta = 0
         planta_pos = plantas[idx_planta]
-        #TODO: Atribuir cliente a planta somente se não exceder a capacidade
         while not _cliente_cabe(clientes_planta[planta_pos],
                                 demanda_clientes[cliente_pos],
                                 capacidade_plantas[planta_pos]
@@ -178,7 +177,8 @@ def _solucao_aleatoria():
             idx_planta += 1
             planta_pos = plantas[idx_planta]
         clientes_planta[planta_pos].append(cliente_pos)
-        custo_total = 0
+
+    custo_total = 0
     for planta_pos in range(0, len(clientes_planta)):
         custo_planta = sum([demanda_clientes[i] for i in clientes_planta[planta_pos]])
         custo_total += custo_planta
