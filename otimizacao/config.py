@@ -11,12 +11,14 @@ dados_plantas = {
     'posicao': []
 }
 
-solucao = []
+solucao = {
+    'instalacao': [],
+    'custo': []
+}
 
 inst = "p3"
 
-caminho = "../dataset/" + inst + ".txt"
-
+caminho = "dataset/" + inst + ".txt"
 
 # Possiveis
 #   'gulosa'
@@ -25,4 +27,4 @@ caminho = "../dataset/" + inst + ".txt"
 
 estrategia = 'aleatoria'
 
-estrategias = ['aleatoria', 'gulosa']
+estrategias = ['gulosa']
