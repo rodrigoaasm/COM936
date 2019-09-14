@@ -18,7 +18,7 @@ solucao = {
 
 inst = "p3"
 
-caminho = "dataset/" + inst + ".txt"
+caminho = "../dataset/" + inst + ".txt"
 
 # Possiveis
 #   'gulosa'
