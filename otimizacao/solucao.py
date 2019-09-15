@@ -175,7 +175,7 @@ def _solucao_aleatoria(dados_clientes, dados_plantas, solucao):
 
     custo_total = 0
     for planta_pos in range(0, len(clientes_planta)):
-        custo_planta = sum([demanda_clientes[i] for i in clientes_planta[planta_pos]])
+        custo_planta = sum([dados_clientes['custo'][i][planta_pos] for i in clientes_planta[planta_pos]])
         custo_total += custo_planta
         if clientes_planta[planta_pos]:
             custo_total += dados_plantas['custo'][planta_pos]
