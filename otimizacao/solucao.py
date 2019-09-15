@@ -140,7 +140,7 @@ def _solucao_gulosa(dados_clientes, dados_plantas, solucao):
 
     return solucao
 
-'''
+
 def _cliente_cabe(clientes_planta, demanda_cliente, capacidade_planta):
     demanda_clientes_planta = [dados_clientes['demanda'][cliente_pos] for
                                cliente_pos in clientes_planta]
@@ -150,7 +150,7 @@ def _cliente_cabe(clientes_planta, demanda_cliente, capacidade_planta):
         return False
     return True
 
-def _solucao_aleatoria():
+def _solucao_aleatoria(dados_clientes, dados_plantas, solucao):
     print('----------SOLUÇÃO ALEATÓRIA----------')
     capacidade_plantas = copy.deepcopy(dados_plantas['capacidade'])
     demanda_clientes = copy.deepcopy(dados_clientes['demanda'])
@@ -186,8 +186,16 @@ def _solucao_aleatoria():
             custo_planta,
             clientes_planta[planta_pos])
         )
+
+        for cliente in clientes_planta[planta_pos]:
+            solucao['instalacao'][cliente] = planta_pos
+            solucao['custo'][cliente] = dados_clientes['custo'][cliente][planta_pos]
+
     print('CUSTO TOTAL ALEATORIO: {}'.format(custo_total))
 
+    return solucao
+
+'''
 def _solucao_hibrida():
     print('solucao hibrida')
     raise NotImplemented()
