@@ -13,6 +13,14 @@ def busca_menor_alocacao_cliente(vec_custos_insta,dados_plantas,dados_clientes,v
          menor_indice = i
    return menor_indice
 
+def calcula_uso_demanda(solucao,dados_plantas):
+   vetor_gasto_demanda =  np.zeros(len(dados_plantas['capacidade']))
+   print(vetor_gasto_demanda)
+   for i in range(0,len(solucao['instalacao'])):
+      vetor_gasto_demanda[solucao['instalacao'][i]] += solucao['custo'][i]
+   print(vetor_gasto_demanda)
+
+
 def refina_sem_abrir(solucao_inicial,dados_clientes,dados_plantas,passos): #dados_clientes,dados_plantas,match) :
 
 #   dados_clientes = {
@@ -28,7 +36,9 @@ def refina_sem_abrir(solucao_inicial,dados_clientes,dados_plantas,passos): #dado
    
    #-----solucao é a partir daqui----------------------------------------------------------------
    valor_obj_atual = calcula_funcao_objetivo(solucao_inicial)
+
  #  vetor_uso_demanda_insta = np.array([150,200,200,50])
+   calcula_uso_demanda(solucao_inicial,dados_plantas)
 
    for i in range(0,passos):
       ind_maior_cliente_alocado = solucao_inicial['custo'].argmax()

@@ -8,7 +8,7 @@ dados_clientes = {
 dados_plantas = {
     'custo': [],
     'capacidade': [],
-    'posicao': []
+    'posicao': [],
 }
 
 solucao = {
