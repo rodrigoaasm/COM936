@@ -1,5 +1,4 @@
 from config import *
-import copy
 import random
 from time import time
 
@@ -18,10 +17,8 @@ def calcula_funcao_objetivo(solucao):
     for i in range(0, len(solucao['instalacao'])):
         if not insta.__contains__(solucao['instalacao'][i]):#verifica se a instalação já foi atribuida, senao considera seu valor
             valor += dados_plantas['custo'][solucao['instalacao'][i]]  # atribui ao valor, o custo de abertura de cada instalação
-            insta.append(solucao['instalacao'][i]) # e a insere no vetor de instalações, para que seu valor não seja contado novamente
-
-        print(' Cliente %d- custo %d - instalacao %d' %(i, dados_clientes['custo'][i][solucao['instalacao'][i]], solucao['instalacao'][i]))
-        valor += solucao['custo'][i] #considera o custo de alocacao de cada cliente para cada instalação
+            insta.append(solucao['instalacao'][i]) # e a insere no vetor de instalações, para que seu valor não seja contado novamente 
+        valor += abs(solucao['custo'][i]) #considera o custo de alocacao de cada cliente para cada instalação
 
     return valor
 

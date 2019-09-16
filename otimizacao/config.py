@@ -1,3 +1,7 @@
+import copy
+import numpy as np
+
+
 dados_clientes = {
     'custo': [],
     'demanda': [],

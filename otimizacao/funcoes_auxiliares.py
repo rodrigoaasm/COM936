@@ -32,7 +32,7 @@ def entrada_dados(dados_clientes, dados_plantas):
 
 
 def saida_dados(text, tipo):
-    np.savetxt('result_%s.txt' % tipo, text, fmt="%s")
+    np.savetxt('saidas/result_%s.txt' % tipo, text, fmt="%s")
     return
 
 def calcula_cxb(dados_plantas):
@@ -50,11 +50,11 @@ def saida_dados_format(result):
 
 def formataSaida(unform_sol):
     listFormat = []
-    for i in range(0,len(unform_sol)):
+    for i in range(0,len(unform_sol['instalacao'])):
         try:
-            listFormat[unform_sol[i]].append(i)
+            listFormat[unform_sol['instalacao'][i]].append(i)
         except:
             listFormat.append([])
-            listFormat[unform_sol[i]].append(i)
+            listFormat[unform_sol['instalacao'][i]].append(i)
 
     return (listFormat)
