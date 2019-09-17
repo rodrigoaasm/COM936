@@ -17,7 +17,8 @@ dados_plantas = {
 
 solucao = {
     'instalacao': [],
-    'custo': []
+    'custo': [],
+    'total': int
 }
 
 inst = "p3"

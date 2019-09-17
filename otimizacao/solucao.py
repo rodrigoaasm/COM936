@@ -26,9 +26,9 @@ def criaSolInicial(dados_clientes, dados_plantas, solucao):
     _iniSolucao(solucao) #inicia o array de solucao
     if estrategias:
         for estrat in estrategias:
-         #   metodo_construtivo = globals()['_solucao_%s' % estrat]
+            metodo_construtivo = globals()['_solucao_%s' % estrat]
             hora_inicio = time()
-            _solucao_gulosa(dados_clientes, dados_plantas, solucao)
+            metodo_construtivo(dados_clientes, dados_plantas, solucao)
             hora_fim = time()
             tempo_execucao = hora_fim - hora_inicio
             hr, resto = divmod(tempo_execucao, 3600)
