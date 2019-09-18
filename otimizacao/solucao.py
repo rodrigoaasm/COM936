@@ -38,6 +38,12 @@ def criaSolInicial(dados_clientes, dados_plantas, solucao):
     #else:
      #   _solucao_padrao()
 
+def sol_min(dados_clientes, solucao):
+    for i in range(0, len(dados_clientes['demanda'])):
+        indice = dados_clientes['custo'][i].index(min(dados_clientes['custo'][i]))
+        solucao['instalacao'][i] = indice
+        solucao['custo'][i] = dados_clientes['custo'][i][indice]
+        dados_clientes['disponivel'][i] = 0
 
 #Função de partição do quicksort
 def partition(dados_clientes, dados_plantas, tipo, ini, fim):
