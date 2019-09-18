@@ -13,7 +13,7 @@ if __name__ == '__main__':
   #  calcula_cxb(dados_plantas)
 
   criaSolInicial(dados_clientes,dados_plantas,solucao)
-  solucao = refina_sem_abrir(solucao,dados_clientes,dados_plantas,200,True)
-  #solucao = formataSaida(solucao)
-  print(solucao)
+  solucao = refina_sem_abrir(solucao,dados_clientes,dados_plantas,200,False)
+  #solucao = formataSaida(solucao,dados_plantas)
+  #print(solucao)
   

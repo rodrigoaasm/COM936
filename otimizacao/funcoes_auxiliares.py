@@ -48,13 +48,9 @@ def saida_dados_format(result):
     file.close()
     return
 
-def formataSaida(unform_sol):
-    listFormat = []
+def cria_vetor_solucao(unform_sol,dados_plantas):
+    listFormat =[ [] for i in range(0,len(dados_plantas['custo'])) ]
+    
     for i in range(0,len(unform_sol['instalacao'])):
-        try:
-            listFormat[unform_sol['instalacao'][i]].append(i)
-        except:
-            listFormat.append([])
-            listFormat[unform_sol['instalacao'][i]].append(i)
-
+        listFormat[unform_sol['instalacao'][i]].append(i)
     return (listFormat)

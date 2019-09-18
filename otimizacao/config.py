@@ -1,5 +1,6 @@
 import copy
 import numpy as np
+import time as time
 
 
 dados_clientes = {
@@ -30,6 +31,6 @@ caminho = "../dataset/" + inst + ".txt"
 #   'aleatoria'
 #   'hibrida'
 
-estrategia = 'aleatoria'
+estrategia = 'gulosa'
 
-estrategias = ['aleatoria']
+estrategias = ['gulosa']
