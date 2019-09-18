@@ -35,7 +35,6 @@ def busca_menor_alocacao_cliente(solucao_inicial_dim_cliente,solucao_inicial_dim
          copia_solucao['instalacao'][solucao_inicial_dim_insta[i][j]] = antiga_insta
          copia_solucao['custo'][j] = dados_clientes['custo'][j][antiga_insta]
          
-
          #print("\t valor_objetivo %d" %(copia_solucao['total']))
         
          #aplica restrição de capacidade         
@@ -47,7 +46,7 @@ def busca_menor_alocacao_cliente(solucao_inicial_dim_cliente,solucao_inicial_dim
             copia_solucao['total'] = calcula_funcao_objetivo(copia_solucao)   
             # se a função objetivo do vizinho for menor
             if(copia_solucao['total'] < solucao_temp['total']):                     
-               solucao_temp = copia_solucao   
+               solucao_temp = copy.deepcopy(dict(copia_solucao))
                ind_menor_custo = i
                ind_do_outro_trocado = j 
                antiga_insta_melhor = antiga_insta
@@ -76,11 +75,14 @@ def busca_menor_alocacao_cliente(solucao_inicial_dim_cliente,solucao_inicial_dim
       vetor_uso_demanda[ind_insta_maior_cliente] += dados_clientes['demanda'][ind_do_outro_trocado]
       vetor_uso_demanda[ind_menor_custo] -= dados_clientes['demanda'][ind_do_outro_trocado]
       vetor_uso_demanda[ind_menor_custo] += dados_clientes['demanda'][ind_cliente]
+      
       solucao_inicial_dim_insta[antiga_insta_melhor][solucao_inicial_dim_insta[antiga_insta_melhor].index(ind_cliente)] = solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado]
       solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado] = ind_cliente
-      solucao_temp['flag_uso'] = np.zeros(len(dados_clientes['demanda']))
-      solucao_inicial_dim_cliente = solucao_temp
+
+      solucao_temp['flag_uso'] = np.zeros(len(dados_clientes['demanda']))      
+      solucao_inicial_dim_cliente = solucao_temp      
    else:
+      print("Nenhum vizinho valido")
       #caso não consiga nenhuma mudança levanta flag
       solucao_inicial_dim_cliente['flag_uso'][ind_cliente] = 1 
              
@@ -161,7 +163,10 @@ def refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect
                                                          vetor_uso_demanda_insta,
                                                          ind_maior_cliente_alocado,
                                                          first,
-                                                         flag_sentido)        
+                                                         flag_sentido)  
+         print("fora")
+         solucao_inicial_dim_insta = cria_vetor_solucao(solucao_inicial_dim_cliente,dados_plantas)
+               
       else: break                                                   
       #se execucao busca apenas o primeiro inverte o sentido
       if(first):

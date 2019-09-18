@@ -22,7 +22,7 @@ solucao = {
     'total': int
 }
 
-inst = "p3"
+inst = "p55"
 
 caminho = "../dataset/" + inst + ".txt"
 
@@ -31,6 +31,6 @@ caminho = "../dataset/" + inst + ".txt"
 #   'aleatoria'
 #   'hibrida'
 
-estrategia = 'gulosa'
+estrategia = 'aleatoria'
 
-estrategias = ['gulosa']
+estrategias = ['aleatoria']

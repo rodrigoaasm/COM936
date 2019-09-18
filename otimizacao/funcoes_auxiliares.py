@@ -8,7 +8,7 @@ def entrada_dados(dados_clientes, dados_plantas):
         n_clientes, n_plantas = header.split()
         n_clientes = int(n_clientes)
         n_plantas = int(n_plantas)
-        custo = [];
+        custo = []
 
         n_linhas_array_clientes = int(n_clientes / 10)
         n_linhas_array_plantas = int(n_plantas / 10)
@@ -62,3 +62,16 @@ def cria_vetor_solucao(unform_sol,dados_plantas):
     for i in range(0,len(unform_sol['instalacao'])):
         listFormat[unform_sol['instalacao'][i]].append(i)
     return (listFormat)
+
+def compara_vetor(a,b):
+    try:
+        for i in range(0,len(a)):
+            
+            if(sum(a[i])!= sum(b[i])):
+                    print(i)
+                    print(a[i])
+                    print(b[i])
+                    return False
+        return True
+    except:
+        return False
