@@ -76,15 +76,13 @@ def busca_menor_alocacao_cliente(solucao_inicial_dim_cliente,solucao_inicial_dim
       vetor_uso_demanda[ind_insta_maior_cliente] += dados_clientes['demanda'][ind_do_outro_trocado]
       vetor_uso_demanda[ind_menor_custo] -= dados_clientes['demanda'][ind_do_outro_trocado]
       vetor_uso_demanda[ind_menor_custo] += dados_clientes['demanda'][ind_cliente]
-      print(solucao_inicial_dim_insta[antiga_insta_melhor])
       solucao_inicial_dim_insta[antiga_insta_melhor][solucao_inicial_dim_insta[antiga_insta_melhor].index(ind_cliente)] = solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado]
       solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado] = ind_cliente
-      solucao_temp['flag_uso'] = np.zeros(len(dados_clientes['demanda']))
       solucao_temp['flag_uso'] = np.zeros(len(dados_clientes['demanda']))
       solucao_inicial_dim_cliente = solucao_temp
    else:
       #caso não consiga nenhuma mudança levanta flag
-      solucao_temp['flag_uso'][ind_cliente] = 1 
+      solucao_inicial_dim_cliente['flag_uso'][ind_cliente] = 1 
              
 
    print("Objetivo refinado: %d" %(solucao_temp['total']))
@@ -164,19 +162,13 @@ def refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect
                                                          ind_maior_cliente_alocado,
                                                          first,
                                                          flag_sentido)        
-         print(solucao_inicial_dim_insta)
-         print(cria_vetor_solucao(solucao_inicial_dim_cliente,dados_plantas))
       else: break                                                   
       #se execucao busca apenas o primeiro inverte o sentido
       if(first):
          flag_sentido *= -1                                                
       
       print("-------------------")
-
-      if avalia_restricao(vetor_uso_demanda_insta,dados_plantas):
-         print("Todas as restrições estõa sendo cumpridas")
-      else:
-         print("quebrou a restrição de instalação")
-      
+   if(not avalia_restricao(vetor_uso_demanda_insta,dados_plantas)):
+      print("RESTRIÇÃO QUEBRADA")
 
    return solucao_inicial_dim_cliente 
