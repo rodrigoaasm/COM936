@@ -47,7 +47,7 @@ def busca_menor_alocacao_cliente(solucao_inicial_dim_cliente,solucao_inicial_dim
                   and ( dados_plantas['capacidade'][i] >= (vetor_uso_demanda[i] - dados_clientes['demanda'][j]
                                                                         + dados_clientes['demanda'][ind_cliente]))):
 
-            copia_solucao['total'] = calcula_funcao_objetivo(copia_solucao)   
+            copia_solucao['total'] = calcula_funcao_objetivo(copia_solucao, dados_plantas)
             # se a função objetivo do vizinho for menor
             if(copia_solucao['total'] < solucao_temp['total']):                     
                solucao_temp = copy.deepcopy(dict(copia_solucao))
@@ -143,7 +143,7 @@ def refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect
 #cria dimensão das instalações
    solucao_inicial_dim_insta = cria_vetor_solucao(solucao_inicial_dim_cliente,dados_plantas)
 #calcula função objetivo 
-   solucao_inicial_dim_cliente['total'] = calcula_funcao_objetivo(solucao_inicial_dim_cliente)
+   solucao_inicial_dim_cliente['total'] = calcula_funcao_objetivo(solucao_inicial_dim_cliente, dados_plantas)
    #print("Objetivo Construtiva: %d" %( solucao_inicial_dim_cliente['total']))
 #cria vetor de demanda usadas
    vetor_uso_demanda_insta = calcula_uso_demanda(solucao_inicial_dim_cliente,dados_plantas,dados_clientes)
@@ -187,3 +187,4 @@ def chama_refinamento(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vec
     hora_fim = time.time()
     tempo_execucao = hora_fim - hora_inicio
     print('Tempo de execução da estratégia refinamento: {}ms'.format(tempo_execucao))
+    return solucao

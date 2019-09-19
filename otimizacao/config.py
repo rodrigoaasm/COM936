@@ -2,27 +2,7 @@ import copy
 import numpy as np
 import time as time
 
-
-dados_clientes = {
-    'custo': [],
-    'demanda': [],
-    'disponivel': [],
-    'posicao': []
-}
-
-dados_plantas = {
-    'custo': [],
-    'capacidade': [],
-    'posicao': [],
-}
-
-solucao = {
-    'instalacao': [],
-    'custo': [],
-    'total': int
-}
-
-inst = "p55"
+inst = "p3"
 
 caminho = "../dataset/" + inst + ".txt"
 
@@ -31,6 +11,8 @@ caminho = "../dataset/" + inst + ".txt"
 #   'aleatoria'
 #   'hibrida'
 
-estrategia = 'aleatoria'
+estrategia = 'gulosa'
 
 estrategias = ['aleatoria']
+
+erros_solucao = []

@@ -11,7 +11,7 @@ def encontra_menor_demanda():
           % (menor + 1, dados_clientes['demanda'][menor]))
 
 #Função que calcula a função objetivo, ou seja, o custo de abertura das instalações mais de alocação de cada cliente
-def calcula_funcao_objetivo(solucao):
+def calcula_funcao_objetivo(solucao, dados_plantas):
     valor = 0
     insta = [] #vetor que guardará as instalações já somadas aos custos, para que não se repitam
     for i in range(0, len(solucao['instalacao'])):
@@ -23,7 +23,7 @@ def calcula_funcao_objetivo(solucao):
     return valor
 
 def criaSolInicial(dados_clientes, dados_plantas, solucao):
-    _iniSolucao(solucao) #inicia o array de solucao
+    _iniSolucao(solucao, dados_clientes) #inicia o array de solucao
     if estrategias:
         for estrat in estrategias:
             metodo_construtivo = globals()['_solucao_%s' % estrat]
@@ -87,7 +87,7 @@ def trocaValores(dados_clientes, dados_plantas, oldPos, newPos, tipo):
             dados_clientes['custo'][newPos], dados_clientes['custo'][oldPos]
 
 #Função que inicia o vetor que conterá a solução
-def _iniSolucao(solucao):
+def _iniSolucao(solucao, dados_clientes):
     for i in range(0, len(dados_clientes['demanda'])):
         solucao['instalacao'].append(0)
         solucao['custo'].append(0)
@@ -140,17 +140,17 @@ def _solucao_gulosa(dados_clientes, dados_plantas, solucao):
     return solucao
 
 
-def _cliente_cabe(clientes_planta, demanda_cliente, capacidade_planta):
-    demanda_clientes_planta = [dados_clientes['demanda'][cliente_pos] for
-                               cliente_pos in clientes_planta]
-    total_planta = sum(demanda_clientes_planta)
-    total_c_cliente = total_planta + demanda_cliente
+def _cliente_cabe(demanda_cliente, capacidade_planta, utilizado_plantas, planta_pos):
+
+    total_c_cliente = utilizado_plantas[planta_pos] + demanda_cliente
+
     if total_c_cliente > capacidade_planta:
         return False
+
+    utilizado_plantas[planta_pos] += demanda_cliente
     return True
 
 def _solucao_aleatoria(dados_clientes, dados_plantas, solucao):
-    print('----------SOLUÇÃO ALEATÓRIA----------')
     capacidade_plantas = copy.deepcopy(dados_plantas['capacidade'])
     demanda_clientes = copy.deepcopy(dados_clientes['demanda'])
     clientes_planta = [[] for item in range(0, len(capacidade_plantas))]
@@ -158,16 +158,17 @@ def _solucao_aleatoria(dados_clientes, dados_plantas, solucao):
 
     clientes = [pos for pos in range(0, len(demanda_clientes))]
     plantas = [pos for pos in range(0, len(capacidade_plantas))]
+    utilizado_plantas = [0 for pos in range(0, len(capacidade_plantas))]
     random.shuffle(clientes)
     random.shuffle(plantas)
 
     for cliente_pos in clientes:
         idx_planta = 0
         planta_pos = plantas[idx_planta]
-        while not _cliente_cabe(clientes_planta[planta_pos],
-                                demanda_clientes[cliente_pos],
-                                capacidade_plantas[planta_pos]
-                                ):
+        while not _cliente_cabe(demanda_clientes[cliente_pos],
+                                capacidade_plantas[planta_pos],
+                                utilizado_plantas,
+                                planta_pos):
             idx_planta += 1
             planta_pos = plantas[idx_planta]
         clientes_planta[planta_pos].append(cliente_pos)
@@ -178,13 +179,6 @@ def _solucao_aleatoria(dados_clientes, dados_plantas, solucao):
         custo_total += custo_planta
         if clientes_planta[planta_pos]:
             custo_total += dados_plantas['custo'][planta_pos]
-        print('PLANTA {}: \n   -Capacidade: {}\n   '
-              '-Usados: {}\n   -Clientes: {}\n\n'.format(
-            planta_pos,
-            capacidade_plantas[planta_pos],
-            custo_planta,
-            clientes_planta[planta_pos])
-        )
 
         for cliente in clientes_planta[planta_pos]:
             solucao['instalacao'][cliente] = planta_pos
