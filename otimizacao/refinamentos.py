@@ -186,7 +186,4 @@ def chama_refinamento(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vec
     solucao = refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect,passos,first)
     hora_fim = time.time()
     tempo_execucao = hora_fim - hora_inicio
-    hr, resto = divmod(tempo_execucao, 3600)
-    min, seg = divmod(resto, 60)
-    print('Tempo de execução da estratégia refinamento: {}ms'.format(seg * 1000))
-    return solucao
+    print('Tempo de execução da estratégia refinamento: {}ms'.format(tempo_execucao))

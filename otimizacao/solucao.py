@@ -31,10 +31,8 @@ def criaSolInicial(dados_clientes, dados_plantas, solucao):
             metodo_construtivo(dados_clientes, dados_plantas, solucao)
             hora_fim = time()
             tempo_execucao = hora_fim - hora_inicio
-            hr, resto = divmod(tempo_execucao, 3600)
-            min, seg = divmod(resto, 60)
 
-            print('Tempo de execução da estratégia {}: {}ms'.format(estrat, seg * 1000))
+            print('Tempo de execução da estratégia {}: {} ms'.format(estrat, tempo_execucao))
 
 def sol_min(dados_clientes, solucao):
     for i in range(0, len(dados_clientes['demanda'])):
