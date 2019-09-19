@@ -1,6 +1,10 @@
+import time as time
+
 from config import *
 from solucao import *
 from funcoes_auxiliares import *
+
+
 
 #retorna o indice da instalação ideal para determinado clinte
 def busca_menor_alocacao_cliente(solucao_inicial_dim_cliente,solucao_inicial_dim_insta,dados_plantas,dados_clientes,vetor_uso_demanda,ind_cliente,first,sentido):
@@ -82,12 +86,11 @@ def busca_menor_alocacao_cliente(solucao_inicial_dim_cliente,solucao_inicial_dim
       solucao_temp['flag_uso'] = np.zeros(len(dados_clientes['demanda']))      
       solucao_inicial_dim_cliente = solucao_temp      
    else:
-      print("Nenhum vizinho valido")
       #caso não consiga nenhuma mudança levanta flag
       solucao_inicial_dim_cliente['flag_uso'][ind_cliente] = 1 
              
 
-   print("Objetivo refinado: %d" %(solucao_temp['total']))
+   #print("Objetivo refinado: %d" %(solucao_temp['total']))
    return solucao_inicial_dim_cliente
 
 #Cria um vetor p/ armezenar as alocações
@@ -109,7 +112,6 @@ def busca_maior(solucao_inicial):
 def avalia_restricao(vetor_demandas_atendidas,dados_plantas):
    ret = True
    for i in range(0,len(vetor_demandas_atendidas)):
-      print("%d -- %d" %(i,dados_plantas['capacidade'][i] - vetor_demandas_atendidas[i]))
       if(dados_plantas['capacidade'][i] < vetor_demandas_atendidas[i]):
          ret = False
    return ret
@@ -117,7 +119,7 @@ def avalia_restricao(vetor_demandas_atendidas,dados_plantas):
 
 def refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect,passos,first):
   
-   print("--------------------------------refinamento ------------------")
+  ## print("--------------------------------refinamento ------------------")
    dados_clientes = {
     'custo': np.array(dados_clientes_vect['custo']),
     'demanda':  np.array(dados_clientes_vect['demanda']),
@@ -142,7 +144,7 @@ def refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect
    solucao_inicial_dim_insta = cria_vetor_solucao(solucao_inicial_dim_cliente,dados_plantas)
 #calcula função objetivo 
    solucao_inicial_dim_cliente['total'] = calcula_funcao_objetivo(solucao_inicial_dim_cliente)
-   print("Objetivo Construtiva: %d" %( solucao_inicial_dim_cliente['total']))
+   #print("Objetivo Construtiva: %d" %( solucao_inicial_dim_cliente['total']))
 #cria vetor de demanda usadas
    vetor_uso_demanda_insta = calcula_uso_demanda(solucao_inicial_dim_cliente,dados_plantas,dados_clientes)
 
@@ -151,10 +153,10 @@ def refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect
       #busca maior
       ind_maior_cliente_alocado = busca_maior(solucao_inicial_dim_cliente)
             
-      #se achar um maior que possa ser movimentaaado
+      #se achar um maior que possa ser movimentado
       if(ind_maior_cliente_alocado >= 0):
 
-         print("Maior escolhido %d em %d" %(solucao_inicial_dim_cliente['custo'][ind_maior_cliente_alocado],ind_maior_cliente_alocado))
+         #print("Maior escolhido %d em %d" %(solucao_inicial_dim_cliente['custo'][ind_maior_cliente_alocado],ind_maior_cliente_alocado))
          
          solucao_inicial_dim_cliente = busca_menor_alocacao_cliente( solucao_inicial_dim_cliente,
                                                          solucao_inicial_dim_insta,
@@ -164,7 +166,7 @@ def refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect
                                                          ind_maior_cliente_alocado,
                                                          first,
                                                          flag_sentido)  
-         print("fora")
+         
          solucao_inicial_dim_insta = cria_vetor_solucao(solucao_inicial_dim_cliente,dados_plantas)
                
       else: break                                                   
@@ -172,8 +174,19 @@ def refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect
       if(first):
          flag_sentido *= -1                                                
       
-      print("-------------------")
    if(not avalia_restricao(vetor_uso_demanda_insta,dados_plantas)):
       print("RESTRIÇÃO QUEBRADA")
+   else:
+      print("Solucão refinada: %d" %(solucao_inicial_dim_cliente['total']))
 
    return solucao_inicial_dim_cliente 
+
+def chama_refinamento(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect,passos,first):
+    hora_inicio = time.time()
+    solucao = refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect,passos,first)
+    hora_fim = time.time()
+    tempo_execucao = hora_fim - hora_inicio
+    hr, resto = divmod(tempo_execucao, 3600)
+    min, seg = divmod(resto, 60)
+    print('Tempo de execução da estratégia refinamento: {}ms'.format(seg * 1000))
+    return solucao

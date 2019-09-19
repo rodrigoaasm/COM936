@@ -50,7 +50,7 @@ def calcula_cxb(dados_plantas):
                                   dados_plantas['custo'][i])
 
 def saida_dados_format(result):
-    file = open("saidas/result_solucoes","w")
+    file = open("saidas/result_solucoes.txt","w")
     for i in range(0,len(result)):
         file.write("%d : %s \n" %(i, result[i] ))
     file.close()
@@ -65,13 +65,9 @@ def cria_vetor_solucao(unform_sol,dados_plantas):
 
 def compara_vetor(a,b):
     try:
-        for i in range(0,len(a)):
-            
+        for i in range(0,len(a)):            
             if(sum(a[i])!= sum(b[i])):
-                    print(i)
-                    print(a[i])
-                    print(b[i])
-                    return False
+                return False
         return True
     except:
         return False

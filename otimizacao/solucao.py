@@ -35,8 +35,6 @@ def criaSolInicial(dados_clientes, dados_plantas, solucao):
             min, seg = divmod(resto, 60)
 
             print('Tempo de execução da estratégia {}: {}ms'.format(estrat, seg * 1000))
-    #else:
-     #   _solucao_padrao()
 
 def sol_min(dados_clientes, solucao):
     for i in range(0, len(dados_clientes['demanda'])):
