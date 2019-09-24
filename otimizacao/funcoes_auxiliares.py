@@ -98,6 +98,8 @@ def zera_vetores():
     solucao = {
         'instalacao': [],
         'custo': [],
+        'flag_uso': [],
+        'em_restricao': bool,
         'total': int
     }
 

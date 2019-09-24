@@ -197,50 +197,41 @@ def avalia_restricao(vetor_demandas_atendidas,dados_plantas):
       if(dados_plantas['capacidade'][i] < vetor_demandas_atendidas[i]):
          ret = False
    return ret
+
+def busca_maior(solucao_inicial):
+   ind_maior = -1
+   maior_valor = -1
+   for i in range(0,len(solucao_inicial['instalacao'])):
+      if(solucao_inicial['custo'][i] > maior_valor):  #and solucao_inicial['flag_uso'][i] != 1):
+         ind_maior = i
+         maior_valor = solucao_inicial['custo'][i]
+   return ind_maior  
     
-def busca_tabu_solucao(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect):
-  
-  ## print("--------------------------------refinamento ------------------")
-    dados_clientes = {
-    'custo': np.array(dados_clientes_vect['custo']),
-    'demanda':  np.array(dados_clientes_vect['demanda']),
-    'disponivel':  np.array(dados_clientes_vect['disponivel']),
-    'posicao':  np.array(dados_clientes_vect['posicao']),
-    }  
+def busca_tabu_solucao(solucao_inicial_dim_cliente,dados_clientes,dados_plantas):  
 
-    dados_plantas = {
-      'custo':  np.array(dados_plantas_vect['custo']),
-      'capacidade': np.array(dados_plantas_vect['capacidade']),
-      'posicao': np.array(dados_plantas_vect['posicao']),
-    }
-
-    solucao_inicial_dim_cliente = {
-    'instalacao': np.array(solucao_inicial_vect['instalacao']),
-    'custo': np.array(solucao_inicial_vect['custo']),
-    'flag_uso' : np.zeros(len(dados_clientes['demanda'])),
-    'em_restricao': bool,    
-    'total': int
-    }   
-
-#calcula função objetivo 
+    #calcula função objetivo 
     solucao_inicial_dim_cliente['total'] = calcula_funcao_objetivo(solucao_inicial_dim_cliente, dados_plantas)
-#guarda solucao inicial como a melhor 
+    #guarda solucao inicial como a melhor 
     melhor_solucao = solucao_inicial_dim_cliente
     solucao_inicial_dim_cliente['em_restricao'] = True
-#cria vetor de demanda usadas
-    vetor_uso_demanda_insta = calcula_uso_demanda(solucao_inicial_dim_cliente,dados_plantas,dados_clientes)   
+    #cria vetor de demanda usadas
+    vetor_uso_demanda_insta = calcula_uso_demanda(solucao_inicial_dim_cliente,dados_plantas,dados_clientes)  
+    tabu = dict() 
     
-      #busca maior cliente alocado no momento
+    #busca maior cliente alocado no momento
     ind_maior_cliente_alocado = busca_maior(solucao_inicial_dim_cliente)
             
-      #se achar um maior que possa ser movimentado
+    #se achar um maior que possa ser movimentado
     if(ind_maior_cliente_alocado >= 0):
-        (solucao_inicial_dim_cliente, vetor_uso_demanda_insta) = gera_vizinhos( solucao_inicial_dim_cliente,
-                                                                dados_plantas,
-                                                                dados_clientes,
-                                                                vetor_uso_demanda_insta,
-                                                                ind_maior_cliente_alocado)  
-        print(solucao_inicial_dim_cliente)
+        
+        (solucao_inicial_dim_cliente, vetor_uso_demanda_insta,tabu) = gera_vizinhos(solucao_inicial_dim_cliente,
+                                                                                    dados_plantas,
+                                                                                    dados_clientes,
+                                                                                    vetor_uso_demanda_insta,
+                                                                                    ind_maior_cliente_alocado,
+                                                                                    tabu)  
+        print(tabu)
+        print(solucao_inicial_dim_cliente['total'])
 
         if(solucao_inicial_dim_cliente['total'] < melhor_solucao['total'] and solucao_inicial_dim_cliente['em_restricao']):            
             melhor_solucao = solucao_inicial_dim_cliente                                                 
@@ -248,8 +239,9 @@ def busca_tabu_solucao(solucao_inicial_vect,dados_clientes_vect,dados_plantas_ve
     return melhor_solucao 
 
 #retorna o indice da instalação ideal para determinado clinte
-def gera_vizinhos(solucao_inicial_dim_cliente,dados_plantas,dados_clientes,vetor_uso_demanda,ind_cliente):
+def gera_vizinhos(solucao_inicial_dim_cliente,dados_plantas,dados_clientes,vetor_uso_demanda,ind_cliente,tabu):
 
+    _tabu = tabu
     solucao_temp = solucao_inicial_dim_cliente
     vetor_uso_demanda_temp = vetor_uso_demanda
    #retorna instalação que aloca o maior cliente alocado
@@ -257,11 +249,20 @@ def gera_vizinhos(solucao_inicial_dim_cliente,dados_plantas,dados_clientes,vetor
 
    #percorre o vetor de instalações por cliente fazendo troca entre o cliente iterado e com maior
     for i in range(0,len(solucao_inicial_dim_cliente['instalacao'])):
-        if(i != ind_cliente):
-        #gera vizinho 
-            copia_solucao = copy.deepcopy(dict(solucao_inicial_dim_cliente))
-            copia_vetor_uso_demanda = copy.deepcopy(vetor_uso_demanda)
 
+        copia_solucao = copy.deepcopy(dict(solucao_inicial_dim_cliente))
+        
+        #Evita gerar o mesmo estado que já esta, chegar em um estado tabu e fazer trocas entre clientes atendidos pela mesma instalação
+        if( i != ind_cliente 
+            and (str(ind_cliente) + "(" + str(copia_solucao['instalacao'][i]) + ")-" + str(i) + "(" + str(copia_solucao['instalacao'][ind_cliente]) + ")") not in tabu
+            and copia_solucao['instalacao'][i] != copia_solucao['instalacao'][ind_cliente] ):           
+            
+            #gera vizinho 
+            copia_tabu = copy.deepcopy(tabu)
+            copia_vetor_uso_demanda = copy.deepcopy(vetor_uso_demanda)
+            #possivel atualização para o tabu       
+            copia_tabu[ str(ind_cliente) + "(" + str(copia_solucao['instalacao'][i]) + ")-" + str(i) + "(" + str(copia_solucao['instalacao'][ind_cliente]) + ")"] = 1
+            print(str(ind_cliente) + "(" + str(copia_solucao['instalacao'][i]) + ")-" + str(i) + "(" + str(copia_solucao['instalacao'][ind_cliente]) + ")")
             #realiza a troca entre as instalações
             antiga_insta = copia_solucao['instalacao'][ind_cliente]
             copia_vetor_uso_demanda[antiga_insta] -= dados_clientes['demanda'][ind_cliente]
@@ -287,64 +288,9 @@ def gera_vizinhos(solucao_inicial_dim_cliente,dados_plantas,dados_clientes,vetor
             #Escolhe como a melhor solucao, se o vizinho for o menor e as duas não tiverem tag de restricao ou as duas tiverem
             if( (copia_solucao['total'] < solucao_temp['total']  and copia_solucao['em_restricao'] == solucao_temp['em_restricao'])
                     or ( copia_solucao['total'] and not(solucao_temp['total'])) or solucao_temp == None ):
+                #atualiza informações do melhor
                 solucao_temp = copia_solucao
                 vetor_uso_demanda_temp = copia_vetor_uso_demanda
+                _tabu = copia_tabu
 
-    return (solucao_temp, copia_vetor_uso_demanda)
-
-
-
-'''
-     # copia_solucao['custo'][ind_cliente] = dados_clientes['custo'][ind_cliente][i]
-      
-      print(copia_solucao['instalacao'])
-      return
-
-
-
-            
-            # se a função objetivo do vizinho for menor
-                                 
-               solucao_temp = copy.deepcopy(dict(copia_solucao))
-               ind_menor_custo = i
-               ind_do_outro_trocado = j 
-               antiga_insta_melhor = antiga_insta
-               #print('melhor') 
-               #se for metodo first 
-               if(first): 
-                  #corrige vetor de demandas
-                  vetor_uso_demanda[ind_insta_maior_cliente] -= dados_clientes['demanda'][ind_cliente]
-                  vetor_uso_demanda[ind_insta_maior_cliente] += dados_clientes['demanda'][ind_do_outro_trocado]
-                  vetor_uso_demanda[ind_menor_custo] -= dados_clientes['demanda'][ind_do_outro_trocado]
-                  vetor_uso_demanda[ind_menor_custo] += dados_clientes['demanda'][ind_cliente]
-
-                  #corrige dimensão de instalação
-                  solucao_inicial_dim_insta[antiga_insta_melhor][solucao_inicial_dim_insta[antiga_insta_melhor].index(ind_cliente)] = solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado]
-                  solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado] = ind_cliente
-
-                  #Abaixa todas as flags
-                  solucao_temp['flag_uso'] = np.zeros(len(dados_clientes['demanda']))
-                  return solucao_temp     
-         #else:
-            #print("quebrou restrição")        
-
-   if(ind_menor_custo >= 0):
-      #codigo é igual lá de cima
-      vetor_uso_demanda[ind_insta_maior_cliente] -= dados_clientes['demanda'][ind_cliente]
-      vetor_uso_demanda[ind_insta_maior_cliente] += dados_clientes['demanda'][ind_do_outro_trocado]
-      vetor_uso_demanda[ind_menor_custo] -= dados_clientes['demanda'][ind_do_outro_trocado]
-      vetor_uso_demanda[ind_menor_custo] += dados_clientes['demanda'][ind_cliente]
-      
-      solucao_inicial_dim_insta[antiga_insta_melhor][solucao_inicial_dim_insta[antiga_insta_melhor].index(ind_cliente)] = solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado]
-      solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado] = ind_cliente
-
-      solucao_temp['flag_uso'] = np.zeros(len(dados_clientes['demanda']))      
-      solucao_inicial_dim_cliente = solucao_temp      
-   else:
-      #caso não consiga nenhuma mudança levanta flag
-      solucao_inicial_dim_cliente['flag_uso'][ind_cliente] = 1 
-             
-
-   #print("Objetivo refinado: %d" %(solucao_temp['total']))
-   return solucao_inicial_dim_cliente
-'''
+    return (solucao_temp, copia_vetor_uso_demanda,_tabu)
