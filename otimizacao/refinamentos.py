@@ -4,8 +4,6 @@ from config import *
 from solucao import *
 from funcoes_auxiliares import *
 
-
-
 #retorna o indice da instalação ideal para determinado clinte
 def busca_menor_alocacao_cliente(solucao_inicial_dim_cliente,solucao_inicial_dim_insta,dados_plantas,dados_clientes,vetor_uso_demanda,ind_cliente,first,sentido):
 
@@ -93,29 +91,6 @@ def busca_menor_alocacao_cliente(solucao_inicial_dim_cliente,solucao_inicial_dim
    #print("Objetivo refinado: %d" %(solucao_temp['total']))
    return solucao_inicial_dim_cliente
 
-#Cria um vetor p/ armezenar as alocações
-def calcula_uso_demanda(solucao,dados_plantas,dados_clientes):
-   vetor_gasto_demanda =  np.zeros(len(dados_plantas['capacidade']))
-   for i in range(0,len(solucao['instalacao'])):
-      vetor_gasto_demanda[solucao['instalacao'][i]] += dados_clientes['demanda'][i]
-   return vetor_gasto_demanda
-
-def busca_maior(solucao_inicial):
-   ind_maior = -1
-   maior_valor = -1
-   for i in range(0,len(solucao_inicial['instalacao'])):
-      if(solucao_inicial['custo'][i] > maior_valor and solucao_inicial['flag_uso'][i] != 1):
-         ind_maior = i
-         maior_valor = solucao_inicial['custo'][i]
-   return ind_maior  
-
-def avalia_restricao(vetor_demandas_atendidas,dados_plantas):
-   ret = True
-   for i in range(0,len(vetor_demandas_atendidas)):
-      if(dados_plantas['capacidade'][i] < vetor_demandas_atendidas[i]):
-         ret = False
-   return ret
-
 
 def refina_sem_abrir(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect,passos,first):
   
@@ -188,3 +163,27 @@ def chama_refinamento(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vec
     tempo_execucao = hora_fim - hora_inicio
     print('Tempo de execução da estratégia refinamento: {}ms'.format(tempo_execucao))
     return solucao
+
+#Cria um vetor p/ armezenar as alocações
+def calcula_uso_demanda(solucao,dados_plantas,dados_clientes):
+   vetor_gasto_demanda =  np.zeros(len(dados_plantas['capacidade']))
+   for i in range(0,len(solucao['instalacao'])):
+      vetor_gasto_demanda[solucao['instalacao'][i]] += dados_clientes['demanda'][i]
+   return vetor_gasto_demanda
+
+def busca_maior(solucao_inicial):
+   ind_maior = -1
+   maior_valor = -1
+   for i in range(0,len(solucao_inicial['instalacao'])):
+      if(solucao_inicial['custo'][i] > maior_valor and solucao_inicial['flag_uso'][i] != 1):
+         ind_maior = i
+         maior_valor = solucao_inicial['custo'][i]
+   return ind_maior  
+   
+
+def avalia_restricao(vetor_demandas_atendidas,dados_plantas):
+   ret = True
+   for i in range(0,len(vetor_demandas_atendidas)):
+      if(dados_plantas['capacidade'][i] < vetor_demandas_atendidas[i]):
+         ret = False
+   return ret

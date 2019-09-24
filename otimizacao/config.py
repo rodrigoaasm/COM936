@@ -13,6 +13,6 @@ caminho = "../dataset/" + inst + ".txt"
 
 estrategia = 'gulosa'
 
-estrategias = ['aleatoria']
+estrategias = ['gulosa']
 
 erros_solucao = []

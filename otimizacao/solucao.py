@@ -1,4 +1,5 @@
 from config import *
+from refinamentos import*
 import random
 from time import time
 
@@ -22,6 +23,7 @@ def calcula_funcao_objetivo(solucao, dados_plantas):
 
     return valor
 
+#chama e faz a medida da função construtiva definida no config.py
 def criaSolInicial(dados_clientes, dados_plantas, solucao):
     _iniSolucao(solucao, dados_clientes) #inicia o array de solucao
     if estrategias:
@@ -31,7 +33,6 @@ def criaSolInicial(dados_clientes, dados_plantas, solucao):
             metodo_construtivo(dados_clientes, dados_plantas, solucao)
             hora_fim = time()
             tempo_execucao = hora_fim - hora_inicio
-
             print('Tempo de execução da estratégia {}: {} ms'.format(estrat, tempo_execucao))
 
 def sol_min(dados_clientes, solucao):
@@ -92,6 +93,7 @@ def _iniSolucao(solucao, dados_clientes):
         solucao['instalacao'].append(0)
         solucao['custo'].append(0)
 
+#Metodo construtivo guloso
 def _solucao_gulosa(dados_clientes, dados_plantas, solucao):
     print('----------SOLUÇÃO GULOSA----------')
 
@@ -150,6 +152,7 @@ def _cliente_cabe(demanda_cliente, capacidade_planta, utilizado_plantas, planta_
     utilizado_plantas[planta_pos] += demanda_cliente
     return True
 
+#metodo construtivo aleatório
 def _solucao_aleatoria(dados_clientes, dados_plantas, solucao):
     capacidade_plantas = copy.deepcopy(dados_plantas['capacidade'])
     demanda_clientes = copy.deepcopy(dados_clientes['demanda'])
@@ -188,24 +191,160 @@ def _solucao_aleatoria(dados_clientes, dados_plantas, solucao):
 
     return solucao
 
+def avalia_restricao(vetor_demandas_atendidas,dados_plantas):
+   ret = True
+   for i in range(0,len(vetor_demandas_atendidas)):
+      if(dados_plantas['capacidade'][i] < vetor_demandas_atendidas[i]):
+         ret = False
+   return ret
+    
+def busca_tabu_solucao(solucao_inicial_vect,dados_clientes_vect,dados_plantas_vect):
+  
+  ## print("--------------------------------refinamento ------------------")
+    dados_clientes = {
+    'custo': np.array(dados_clientes_vect['custo']),
+    'demanda':  np.array(dados_clientes_vect['demanda']),
+    'disponivel':  np.array(dados_clientes_vect['disponivel']),
+    'posicao':  np.array(dados_clientes_vect['posicao']),
+    }  
+
+    dados_plantas = {
+      'custo':  np.array(dados_plantas_vect['custo']),
+      'capacidade': np.array(dados_plantas_vect['capacidade']),
+      'posicao': np.array(dados_plantas_vect['posicao']),
+    }
+
+    solucao_inicial_dim_cliente = {
+    'instalacao': np.array(solucao_inicial_vect['instalacao']),
+    'custo': np.array(solucao_inicial_vect['custo']),
+    'flag_uso' : np.zeros(len(dados_clientes['demanda'])),
+    'em_restricao': bool,    
+    'total': int
+    }   
+
+#calcula função objetivo 
+    solucao_inicial_dim_cliente['total'] = calcula_funcao_objetivo(solucao_inicial_dim_cliente, dados_plantas)
+#guarda solucao inicial como a melhor 
+    melhor_solucao = solucao_inicial_dim_cliente
+    solucao_inicial_dim_cliente['em_restricao'] = True
+#cria vetor de demanda usadas
+    vetor_uso_demanda_insta = calcula_uso_demanda(solucao_inicial_dim_cliente,dados_plantas,dados_clientes)   
+    
+      #busca maior cliente alocado no momento
+    ind_maior_cliente_alocado = busca_maior(solucao_inicial_dim_cliente)
+            
+      #se achar um maior que possa ser movimentado
+    if(ind_maior_cliente_alocado >= 0):
+        (solucao_inicial_dim_cliente, vetor_uso_demanda_insta) = gera_vizinhos( solucao_inicial_dim_cliente,
+                                                                dados_plantas,
+                                                                dados_clientes,
+                                                                vetor_uso_demanda_insta,
+                                                                ind_maior_cliente_alocado)  
+        print(solucao_inicial_dim_cliente)
+
+        if(solucao_inicial_dim_cliente['total'] < melhor_solucao['total'] and solucao_inicial_dim_cliente['em_restricao']):            
+            melhor_solucao = solucao_inicial_dim_cliente                                                 
+
+    return melhor_solucao 
+
+#retorna o indice da instalação ideal para determinado clinte
+def gera_vizinhos(solucao_inicial_dim_cliente,dados_plantas,dados_clientes,vetor_uso_demanda,ind_cliente):
+
+    solucao_temp = solucao_inicial_dim_cliente
+    vetor_uso_demanda_temp = vetor_uso_demanda
+   #retorna instalação que aloca o maior cliente alocado
+    ind_insta_maior_cliente = solucao_inicial_dim_cliente['instalacao'][ind_cliente]
+
+   #percorre o vetor de instalações por cliente fazendo troca entre o cliente iterado e com maior
+    for i in range(0,len(solucao_inicial_dim_cliente['instalacao'])):
+        if(i != ind_cliente):
+        #gera vizinho 
+            copia_solucao = copy.deepcopy(dict(solucao_inicial_dim_cliente))
+            copia_vetor_uso_demanda = copy.deepcopy(vetor_uso_demanda)
+
+            #realiza a troca entre as instalações
+            antiga_insta = copia_solucao['instalacao'][ind_cliente]
+            copia_vetor_uso_demanda[antiga_insta] -= dados_clientes['demanda'][ind_cliente]
+
+            copia_solucao['instalacao'][ind_cliente] = copia_solucao['instalacao'][i] 
+            copia_vetor_uso_demanda[copia_solucao['instalacao'][i]] -= dados_clientes['demanda'][i]
+            copia_vetor_uso_demanda[copia_solucao['instalacao'][i]] += dados_clientes['demanda'][ind_cliente]           
+            copia_solucao['custo'][ind_cliente] = dados_clientes['custo'][ind_cliente][copia_solucao['instalacao'][ind_cliente]]  
+            
+            copia_solucao['instalacao'][i] = antiga_insta
+            copia_solucao['custo'][i] = dados_clientes['custo'][i][copia_solucao['instalacao'][i]]
+            copia_vetor_uso_demanda[antiga_insta] += dados_clientes['demanda'][i]
+
+            #realiza os calculos de restrição e objetivo
+            copia_solucao['em_restricao'] = avalia_restricao(copia_vetor_uso_demanda,dados_plantas)
+            copia_solucao['total'] = calcula_funcao_objetivo(copia_solucao, dados_plantas)
+
+            print(copia_solucao['instalacao'])
+            print(copia_solucao['total'])
+            print(copia_solucao['em_restricao'])
+            print('---------------------------')
+
+            #Escolhe como a melhor solucao, se o vizinho for o menor e as duas não tiverem tag de restricao ou as duas tiverem
+            if( (copia_solucao['total'] < solucao_temp['total']  and copia_solucao['em_restricao'] == solucao_temp['em_restricao'])
+                    or ( copia_solucao['total'] and not(solucao_temp['total'])) or solucao_temp == None ):
+                solucao_temp = copia_solucao
+                vetor_uso_demanda_temp = copia_vetor_uso_demanda
+
+    return (solucao_temp, copia_vetor_uso_demanda)
+
+
+
 '''
-def _solucao_hibrida():
-    print('solucao hibrida')
-    raise NotImplemented()
+     # copia_solucao['custo'][ind_cliente] = dados_clientes['custo'][ind_cliente][i]
+      
+      print(copia_solucao['instalacao'])
+      return
 
-def _solucao_padrao():
-    insta = 0
-    qtdDemandaInsta = dados_plantas['capacidade'][0]
-    for i in range(0, len(dados_clientes['demanda'])):
-        if qtdDemandaInsta >= dados_clientes['demanda'][i]:
-            qtdDemandaInsta -= dados_clientes['demanda'][i]
-            solucao.append(insta)
-        else:
-            insta += 1
-            qtdDemandaInsta = dados_plantas['capacidade'][insta] - \
-                              dados_clientes['demanda'][i]
-            solucao.append(insta)
 
-    for i in range(0, len(dados_clientes['demanda'])):
-        print("Cliente %d" % (solucao[i]))
+
+            
+            # se a função objetivo do vizinho for menor
+                                 
+               solucao_temp = copy.deepcopy(dict(copia_solucao))
+               ind_menor_custo = i
+               ind_do_outro_trocado = j 
+               antiga_insta_melhor = antiga_insta
+               #print('melhor') 
+               #se for metodo first 
+               if(first): 
+                  #corrige vetor de demandas
+                  vetor_uso_demanda[ind_insta_maior_cliente] -= dados_clientes['demanda'][ind_cliente]
+                  vetor_uso_demanda[ind_insta_maior_cliente] += dados_clientes['demanda'][ind_do_outro_trocado]
+                  vetor_uso_demanda[ind_menor_custo] -= dados_clientes['demanda'][ind_do_outro_trocado]
+                  vetor_uso_demanda[ind_menor_custo] += dados_clientes['demanda'][ind_cliente]
+
+                  #corrige dimensão de instalação
+                  solucao_inicial_dim_insta[antiga_insta_melhor][solucao_inicial_dim_insta[antiga_insta_melhor].index(ind_cliente)] = solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado]
+                  solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado] = ind_cliente
+
+                  #Abaixa todas as flags
+                  solucao_temp['flag_uso'] = np.zeros(len(dados_clientes['demanda']))
+                  return solucao_temp     
+         #else:
+            #print("quebrou restrição")        
+
+   if(ind_menor_custo >= 0):
+      #codigo é igual lá de cima
+      vetor_uso_demanda[ind_insta_maior_cliente] -= dados_clientes['demanda'][ind_cliente]
+      vetor_uso_demanda[ind_insta_maior_cliente] += dados_clientes['demanda'][ind_do_outro_trocado]
+      vetor_uso_demanda[ind_menor_custo] -= dados_clientes['demanda'][ind_do_outro_trocado]
+      vetor_uso_demanda[ind_menor_custo] += dados_clientes['demanda'][ind_cliente]
+      
+      solucao_inicial_dim_insta[antiga_insta_melhor][solucao_inicial_dim_insta[antiga_insta_melhor].index(ind_cliente)] = solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado]
+      solucao_inicial_dim_insta[ind_menor_custo][ind_do_outro_trocado] = ind_cliente
+
+      solucao_temp['flag_uso'] = np.zeros(len(dados_clientes['demanda']))      
+      solucao_inicial_dim_cliente = solucao_temp      
+   else:
+      #caso não consiga nenhuma mudança levanta flag
+      solucao_inicial_dim_cliente['flag_uso'][ind_cliente] = 1 
+             
+
+   #print("Objetivo refinado: %d" %(solucao_temp['total']))
+   return solucao_inicial_dim_cliente
 '''
