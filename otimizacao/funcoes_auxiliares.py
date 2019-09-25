@@ -1,51 +1,52 @@
 import sys
 import traceback
-import numpy as np
-from config import *
 
-def entrada_dados(dados_clientes, dados_plantas, caminho):
-    with open(caminho, 'r') as f:
-        data = f.readlines()
-        header = data.pop(0)
-        n_clientes, n_plantas = header.split()
-        n_clientes = int(n_clientes)
-        n_plantas = int(n_plantas)
-        custo = []
-
-        n_linhas_array_clientes = int(n_clientes / 10)
-        n_linhas_array_clientes += 1 if divmod(n_clientes, 10)[1] else 0
-        n_linhas_array_plantas = int(n_plantas / 10)
-        n_linhas_array_plantas += 1 if divmod(n_plantas, 10)[1] else 0
-        for i in range(0, n_clientes):
-            for j in range(0, n_linhas_array_plantas):
-                cliente = data.pop(0)
-                for cli in cliente.split():
-                    custo.append(int(float(cli)))
-            dados_clientes['custo'].append(custo)
-            custo = []
-
-            [dados_clientes['posicao'].append(i)]
-            [dados_clientes['disponivel'].append(1)]
-
-        for i in range(0, n_linhas_array_clientes):
-            demanda = data.pop(0)
-            [dados_clientes['demanda'].append(
-                int(float(dem))) for dem in demanda.split()]
-
-        for i in range(0, n_linhas_array_plantas):
-            [dados_plantas['custo'].append(
-                int(float(cus))) for cus in data.pop(0).split()]
-        for i in range(0, n_linhas_array_plantas):
-            [dados_plantas['capacidade'].append(
-                int(float(cap))) for cap in data.pop(0).split()]
-
-        for i in range(0, n_plantas):
-            [dados_plantas['posicao'].append(i)]
+#Pega um valor expecifico de qualquer dicionario, de forma a ser genérico
+def getValor(dados_clientes, dados_plantas, tipo, pos):#tipo terá duas funcionalidades, 1- dizer se é para cliente ou para instalacoes
+    if tipo == -1: #caso seja para clientes, ele guardará a posição do cliente que está sendo manipulado
+        return dados_plantas['custo'][pos]
+    else:
+        return dados_clientes['custo'][pos][tipo]
 
 
-def saida_dados(text, tipo):
-    np.savetxt('saidas/result_%s.txt' % tipo, text, fmt="%s")
-    return
+def trocaValores(dados_clientes, dados_plantas, oldPos, newPos, tipo):
+    if tipo == -1: #Troca valores do dictionary de plantas, sendo que eles deveram estar em oldPos e newPos
+        dados_plantas['custo'][oldPos], dados_plantas['custo'][newPos] = dados_plantas['custo'][newPos], dados_plantas['custo'][oldPos]
+        dados_plantas['posicao'][oldPos], dados_plantas['posicao'][newPos] = dados_plantas['posicao'][newPos], dados_plantas['posicao'][oldPos]
+        dados_plantas['capacidade'][oldPos], dados_plantas['capacidade'][newPos] = dados_plantas['capacidade'][newPos], dados_plantas['capacidade'][oldPos]
+    else: #Troca valores do dictionary de clientes, seguindo o mesmo principio do anterior, mas com a diferença que tipo é a posição da instalação para ordenar os custos dos clientes
+        dados_clientes['demanda'][oldPos], dados_clientes['demanda'][newPos] = dados_clientes['demanda'][newPos], dados_clientes['demanda'][oldPos]
+        dados_clientes['posicao'][oldPos], dados_clientes['posicao'][newPos] = dados_clientes['posicao'][newPos],dados_clientes['posicao'][oldPos]
+        dados_clientes['disponivel'][oldPos], dados_clientes['disponivel'][newPos] = dados_clientes['disponivel'][newPos], dados_clientes['disponivel'][oldPos]
+        #print(" Cliente old: %d - custo: %d, Cliente new: %d - custo: %d"%(oldPos, dados_clientes['custo'][oldPos][tipo], newPos,dados_clientes['custo'][newPos][tipo]))
+        dados_clientes['custo'][oldPos], dados_clientes['custo'][newPos] = \
+            dados_clientes['custo'][newPos], dados_clientes['custo'][oldPos]
+
+#Função de partição do quicksort
+def partition(dados_clientes, dados_plantas, tipo, ini, fim):
+    pos = ini
+    pivot = getValor(dados_clientes, dados_plantas, tipo, ini) #recebe qual posição sera o pivo
+
+    for i in range(ini+1, fim+1):
+        if getValor(dados_clientes, dados_plantas, tipo, i) < pivot:
+            pos = pos + 1
+            if i != pos:
+                trocaValores(dados_clientes, dados_plantas, pos, i, tipo)
+
+    trocaValores(dados_clientes, dados_plantas, pos, ini, tipo)
+    return pos #retorna pivo
+
+
+#Chamada da função quick que permite as subdivisõs
+#Tipo simbolizará se quick é para ordenar clientes ou instalações
+#caso esteja menor do que 0 será para instalações, e se for maior será para clientes
+#Sendo que tipo também fará a função de ser o indice da instalação para ordenar os clientes
+def quickSort(dados_clientes, dados_plantas, tipo, ini, fim):
+    if ini < fim:
+        pi = partition(dados_clientes, dados_plantas, tipo, ini, fim)
+        quickSort(dados_clientes, dados_plantas, tipo, ini, pi - 1)
+        quickSort(dados_clientes, dados_plantas, tipo, pi + 1, fim)
+
 
 
 def calcula_cxb(dados_plantas):
@@ -53,15 +54,6 @@ def calcula_cxb(dados_plantas):
     for i in range(0, len(dados_plantas['custo'])):
         dados_plantas['cxb'].append(dados_plantas['capacidade'][i] /
                                   dados_plantas['custo'][i])
-
-
-def saida_dados_format(result):
-    file = open("saidas/result_solucoes.txt","w")
-    for i in range(0,len(result)):
-        file.write("%d : %s \n" %(i, result[i] ))
-    file.close()
-    return
-
 
 def cria_vetor_solucao(unform_sol,dados_plantas):
     listFormat =[ [] for i in range(0,len(dados_plantas['custo'])) ]

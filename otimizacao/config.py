@@ -1,8 +1,7 @@
 import copy
 import numpy as np
-import time as time
 
-inst = "p3"
+inst = "p55"
 
 caminho = "../dataset/" + inst + ".txt"
 
