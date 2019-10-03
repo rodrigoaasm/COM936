@@ -1,5 +1,16 @@
+import os.path
 import sys
 import traceback
+import openpyxl as xl
+
+tipo_coluna = {
+    'Refinamento': 'C',
+    'Tabu': 'D',
+    'Refinamento->Tabu': 'E',
+    'Tabu->Refinamento': 'F',
+    'Refinamento->Tabu->Refinamento': 'G',
+}
+
 
 #Pega um valor expecifico de qualquer dicionario, de forma a ser genérico
 def getValor(dados_clientes, dados_plantas, solucao, tipo, pos):#tipo terá duas funcionalidades, 1- dizer se é para cliente ou para instalacoes
@@ -111,6 +122,32 @@ def zera_vetores():
     }
 
     return dados_clientes, dados_plantas, solucao
+
+def get_planilha(caminho):
+    if os.path.exists(caminho):
+        wb = xl.load_workbook(caminho)
+    else:
+        wb = xl.Workbook()
+
+        sheet = wb.create_sheet('Resultados')
+        sheet['B2'] = 'Instância'
+        sheet['C2'] = 'Refinamento'
+        sheet['D2'] = 'Tabu'
+        sheet['E2'] = 'Refinamento->Tabu'
+        sheet['F2'] = 'Tabu->Refinamento'
+        sheet['G2'] = 'Refinamento->Tabu->Refinamento'
+
+    return wb
+
+
+def saida_dados_excel(dataset, solucao, tipo):
+    fpath = 'saidas/result.xlsx'
+    wb = get_planilha(fpath)
+    sheet = wb.get_sheet_by_name('Resultados')
+    cell = tipo_coluna.get(tipo) + str(dataset+3)
+    sheet[cell] = solucao
+    wb.save(fpath)
+
 
 def print_error():
     traceback_template = '''Traceback (most recent call last):
