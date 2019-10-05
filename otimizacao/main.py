@@ -14,7 +14,7 @@ from refinamentos import*
 
 if __name__ == '__main__':
 
-    for p in range(1, 58):
+    for p in range(1, 58): #para executar para todos os datasets basta colocar 58 no fim do range
         print('------P{}--------------------------------------------'.format(p))
         dados_clientes, dados_plantas, solucao = zera_vetores()
         caminho = "../dataset/p" + str(p) + ".txt"

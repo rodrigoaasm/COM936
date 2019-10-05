@@ -2,6 +2,8 @@ from time import time
 
 from config import *
 from construtiva import _solucao_gulosa
+from construtiva import _solucao_gulosa_2
+from construtiva import _solucao_gulosa_delimitada_demanda
 from construtiva import _iniSolucao
 
 #Função que calcula a função objetivo, ou seja, o custo de abertura das instalações mais de alocação de cada cliente
@@ -27,6 +29,21 @@ def criaSolInicial(dados_clientes, dados_plantas, solucao):
             hora_fim = time()
             tempo_execucao = hora_fim - hora_inicio
             print('Tempo de execução da estratégia {}: {} ms'.format(estrat, tempo_execucao))
+
+            #vet = [] #esolhendo na mão as instalações
+            #vet.append(3)
+            #vet.append(1)
+            #state = _solucao_gulosa_2(dados_clientes, dados_plantas, solucao, vet)
+            #if state == 1:
+             #   print("foi")
+            #else :
+             #   print("nao foi")
+            #_solucao_gulosa_delimitada_demanda(dados_clientes, dados_plantas, solucao)
+
+            #for i in range(0, len(solucao['instalacao'])):
+             #   print(" Cliente: %d - Insta: %d - Custo: %d" % (i, solucao['instalacao'][i], solucao['custo'][i]))
+
+            print("Valor: %d "%calcula_funcao_objetivo(solucao, dados_plantas))
 
 def avalia_restricao(vetor_demandas_atendidas,dados_plantas):
    ret = True
