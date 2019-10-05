@@ -46,7 +46,7 @@ def _solucao_gulosa_delimitada_demanda(dados_clientes, dados_plantas, solucao):
     multiplicador = 1
 
     while(state == 0):
-        instalacoes_escolhidas = _gera_solucao_minima(dados_clientes, dados_plantas, multiplicador, -1)
+        instalacoes_escolhidas = _gera_solucao_minima(dados_clientes, dados_plantas, multiplicador, -3)
         multiplicador += 0.05
         state = _solucao_gulosa_2(dados_clientes, dados_plantas, solucao, instalacoes_escolhidas)
         i += 1

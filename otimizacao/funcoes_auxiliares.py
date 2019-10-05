@@ -37,10 +37,16 @@ def partition(dados_clientes, dados_plantas, solucao, tipo, ini, fim):
     pivot = getValor(dados_clientes, dados_plantas, solucao, tipo, ini) #recebe qual posição sera o pivo
 
     for i in range(ini+1, fim+1):
-        if getValor(dados_clientes, dados_plantas, solucao, tipo, i) < pivot:
-            pos = pos + 1
-            if i != pos:
-                trocaValores(dados_clientes, dados_plantas, solucao, pos, i, tipo)
+        if(tipo == -3):
+            if getValor(dados_clientes, dados_plantas, solucao, tipo, i) > pivot:
+                pos = pos + 1
+                if i != pos:
+                    trocaValores(dados_clientes, dados_plantas, solucao, pos, i, tipo)
+        else:
+            if getValor(dados_clientes, dados_plantas, solucao, tipo, i) < pivot:
+                pos = pos + 1
+                if i != pos:
+                    trocaValores(dados_clientes, dados_plantas, solucao, pos, i, tipo)
 
     trocaValores(dados_clientes, dados_plantas, solucao, pos, ini, tipo)
     return pos #retorna pivo
