@@ -14,6 +14,6 @@ validade_tabu = 3
 
 estrategia = 'gulosa'
 
-estrategias = ['gulosa']
+estrategias = ['gulosa_delimitada_demanda']
 
 erros_solucao = []
