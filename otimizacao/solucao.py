@@ -51,11 +51,4 @@ def calcula_uso_demanda(solucao,dados_plantas,dados_clientes):
       vetor_gasto_demanda[solucao['instalacao'][i]] += dados_clientes['demanda'][i]
    return vetor_gasto_demanda
 
-def avalia_restricao(vetor_demandas_atendidas,dados_plantas):
-   ret = True
-   for i in range(0,len(vetor_demandas_atendidas)):
-      if(dados_plantas['capacidade'][i] < vetor_demandas_atendidas[i]):
-         ret = False
-   return ret
-  
  

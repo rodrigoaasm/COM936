@@ -10,6 +10,7 @@ from funcoes_auxiliares import*
 from solucao import*
 from construtiva import*
 from refinamentos import*
+from busca_tabu import *
 
 
 if __name__ == '__main__':
@@ -21,9 +22,23 @@ if __name__ == '__main__':
    
         entrada_dados(dados_clientes,dados_plantas, caminho)
         criaSolInicial(dados_clientes,dados_plantas,solucao)
-        solucao = chama_refinamento(solucao,dados_clientes,dados_plantas,False)
-        solucao = cria_vetor_solucao(solucao,dados_plantas)
-        saida_dados_format(solucao)
+        #solucao = chama_refinamento(solucao,dados_clientes,dados_plantas,False)
+        #solucao = cria_vetor_solucao(solucao,dados_plantas)
+        print(calcula_funcao_objetivo(solucao,dados_plantas))
+        
+        fobjAnt = calcula_funcao_objetivo(solucao,dados_plantas)
+
+        while(True):
+            solucao = busca_tabu_solucao(solucao,dados_clientes,dados_plantas,400,validade_tabu)
+            solucao = refina_sem_abrir(solucao,dados_clientes,dados_plantas,False)
+            
+            if (fobjAnt > solucao['total']):
+                break
+
+        
+        print("Busca tabu:")
+        print(solucao['total'])
+        #saida_dados_format(solucao)
 
         #try:
         #    criaSolInicial(dados_clientes, dados_plantas, solucao)

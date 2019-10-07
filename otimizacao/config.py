@@ -5,6 +5,8 @@ inst = "p55"
 
 caminho = "../dataset/" + inst + ".txt"
 
+validade_tabu = 3
+
 # Possiveis
 #   'gulosa'
 #   'aleatoria'
