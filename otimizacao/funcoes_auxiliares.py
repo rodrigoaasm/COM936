@@ -9,6 +9,7 @@ tipo_coluna = {
     'Refinamento->Tabu': 'E',
     'Tabu->Refinamento': 'F',
     'Refinamento->Tabu->Refinamento': 'G',
+    'Tempo': 'H',
 }
 
 
@@ -123,27 +124,31 @@ def zera_vetores():
 
     return dados_clientes, dados_plantas, solucao
 
-def get_planilha(caminho):
+def get_planilha(caminho, validade_tabu):
     if os.path.exists(caminho):
         wb = xl.load_workbook(caminho)
+        if not 'Resultados' + str(validade_tabu) in wb.sheetnames:
+            sheet = wb.create_sheet('Resultados' + str(validade_tabu))
     else:
         wb = xl.Workbook()
 
-        sheet = wb.create_sheet('Resultados')
+        sheet = wb.create_sheet('Resultados'+str(validade_tabu))
         sheet['B2'] = 'Instância'
         sheet['C2'] = 'Refinamento'
         sheet['D2'] = 'Tabu'
         sheet['E2'] = 'Refinamento->Tabu'
         sheet['F2'] = 'Tabu->Refinamento'
         sheet['G2'] = 'Refinamento->Tabu->Refinamento'
+        sheet['H2'] = 'Tempo'
 
     return wb
 
 
-def saida_dados_excel(dataset, solucao, tipo):
+def saida_dados_excel(dataset, solucao, tipo, validade_tabu):
     fpath = 'saidas/result.xlsx'
-    wb = get_planilha(fpath)
-    sheet = wb.get_sheet_by_name('Resultados')
+    wb = get_planilha(fpath, validade_tabu)
+    sheet = wb.get_sheet_by_name('Resultados'+str(validade_tabu))
+    sheet['B' + str(dataset+3)] = dataset
     cell = tipo_coluna.get(tipo) + str(dataset+3)
     sheet[cell] = solucao
     wb.save(fpath)
