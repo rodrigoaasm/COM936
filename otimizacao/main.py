@@ -15,14 +15,10 @@ from busca_tabu import *
 
 
 if __name__ == '__main__':
-    for v in range(4, 10):
+    for v in range(4, 5):
         validade_tabu = v
         for p in range(1, 58): #para executar para todos os datasets basta colocar 58 no fim do range
             print('------P{}--------------------------------------------'.format(p))
-
-            if p == 11:
-                print('Pulando o 11')
-                continue
 
             dados_clientes, dados_plantas, solucao = zera_vetores()
             caminho = "../dataset/p" + str(p) + ".txt"
@@ -31,7 +27,7 @@ if __name__ == '__main__':
             criaSolInicial(dados_clientes,dados_plantas,solucao)
             #solucao = chama_refinamento(solucao,dados_clientes,dados_plantas,False)
             #solucao = cria_vetor_solucao(solucao,dados_plantas)
-            print(calcula_funcao_objetivo(solucao,dados_plantas))
+            #print(calcula_funcao_objetivo(solucao,dados_plantas))
 
             fobjAnt = calcula_funcao_objetivo(solucao,dados_plantas)
 
@@ -55,8 +51,7 @@ if __name__ == '__main__':
             tempo_execucao = hora_fim - hora_inicio
             saida_dados_excel(p, solucao['total'], 'Tabu->Refinamento', validade_tabu)
             saida_dados_excel(p, str(tempo_execucao), 'Tempo', validade_tabu)
-            print("Busca tabu:")
-            print(solucao['total'])
+            print("Busca tabu: %d" %solucao['total'])
 
             #saida_dados_format(solucao)
 
