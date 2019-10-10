@@ -1,6 +1,6 @@
-from filecmp import cmp
+# from filecmp import cmp
 
-from Tools.demo.sortvisu import quicksort
+# from Tools.demo.sortvisu import quicksort
 from config import*
 from funcoes_auxiliares import*
 

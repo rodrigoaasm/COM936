@@ -5,7 +5,8 @@ inst = "p55"
 
 caminho = "../dataset/" + inst + ".txt"
 
-validade_tabu = 3
+validade_tabu = 4
+max_tentativas = 10
 
 # Possiveis
 #   'gulosa'
@@ -14,6 +15,6 @@ validade_tabu = 3
 
 estrategia = 'gulosa'
 
-estrategias = ['gulosa_delimitada_demanda']
+estrategias = ['gulosa']
 
 erros_solucao = []

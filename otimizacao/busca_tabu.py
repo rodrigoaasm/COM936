@@ -53,7 +53,7 @@ def busca_tabu_solucao(solucao_inicial_dim_cliente,dados_clientes,dados_plantas,
         
         atualizaTabu(tabu,validade_tabu)
        # print(tabu)
-        time.sleep(2)
+
 
             
         ind_maior_cliente_alocado = busca_maior(solucao_inicial_dim_cliente)  
