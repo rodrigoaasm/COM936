@@ -1,17 +1,34 @@
-import os.path
 import sys
 import traceback
-import openpyxl as xl
 
-tipo_coluna = {
-    'Refinamento': 'C',
-    'Tabu': 'D',
-    'Refinamento->Tabu': 'E',
-    'Tabu->Refinamento': 'F',
-    'Refinamento->Tabu->Refinamento': 'G',
-    'Tempo': 'H',
-}
+import numpy as np
 
+#chama e faz a medida da função construtiva definida no config.py
+def criaSolInicial(dados_clientes, dados_plantas, solucao):
+    _iniSolucao(solucao, dados_clientes) #inicia o array de solucao
+    if estrategias:
+        for estrat in estrategias:
+            metodo_construtivo = globals()['_solucao_%s' % estrat]
+            hora_inicio = time()
+            metodo_construtivo(dados_clientes, dados_plantas, solucao)
+            hora_fim = time()
+            tempo_execucao = hora_fim - hora_inicio
+            print('Tempo de execução da estratégia {}: {} ms'.format(estrat, tempo_execucao))
+
+            #vet = [] #esolhendo na mão as instalações
+            #vet.append(3)
+            #vet.append(1)
+            #state = _solucao_gulosa_2(dados_clientes, dados_plantas, solucao, vet)
+            #if state == 1:
+             #   print("foi")
+            #else :
+             #   print("nao foi")
+            #_solucao_gulosa_delimitada_demanda(dados_clientes, dados_plantas, solucao)
+
+            #for i in range(0, len(solucao['instalacao'])):
+             #   print(" Cliente: %d - Insta: %d - Custo: %d" % (i, solucao['instalacao'][i], solucao['custo'][i]))
+
+            print("Valor: %d "%calcula_funcao_objetivo(solucao, dados_plantas))
 
 #Pega um valor expecifico de qualquer dicionario, de forma a ser genérico
 def getValor(dados_clientes, dados_plantas, solucao, tipo, pos):#tipo terá duas funcionalidades, 1- dizer se é para cliente ou para instalacoes
@@ -99,6 +116,12 @@ def compara_vetor(a,b):
     except:
         return False
 
+def compara_diff_solucoes(solucaoA,solucaoB):
+    tam = len(solucaoA)
+    diff = np.zeros(tam)
+    for i in range(0,tam):
+        diff[i] =  (solucaoA['aberta'][i] and not solucaoB['aberta'][i] ) or (not solucaoA['aberta'][i]  and solucaoB['aberta'][i])
+    return diff
 
 def zera_vetores():
     dados_clientes = {
@@ -123,36 +146,6 @@ def zera_vetores():
     }
 
     return dados_clientes, dados_plantas, solucao
-
-def get_planilha(caminho, validade_tabu):
-    if os.path.exists(caminho):
-        wb = xl.load_workbook(caminho)
-        if not 'Resultados' + str(validade_tabu) in wb.sheetnames:
-            sheet = wb.create_sheet('Resultados' + str(validade_tabu))
-    else:
-        wb = xl.Workbook()
-
-        sheet = wb.create_sheet('Resultados'+str(validade_tabu))
-        sheet['B2'] = 'Instância'
-        sheet['C2'] = 'Refinamento'
-        sheet['D2'] = 'Tabu'
-        sheet['E2'] = 'Refinamento->Tabu'
-        sheet['F2'] = 'Tabu->Refinamento'
-        sheet['G2'] = 'Refinamento->Tabu->Refinamento'
-        sheet['H2'] = 'Tempo'
-
-    return wb
-
-
-def saida_dados_excel(dataset, solucao, tipo, validade_tabu):
-    fpath = 'saidas/result.xlsx'
-    wb = get_planilha(fpath, validade_tabu)
-    sheet = wb.get_sheet_by_name('Resultados'+str(validade_tabu))
-    sheet['B' + str(dataset+3)] = dataset
-    cell = tipo_coluna.get(tipo) + str(dataset+3)
-    sheet[cell] = solucao
-    wb.save(fpath)
-
 
 def print_error():
     traceback_template = '''Traceback (most recent call last):

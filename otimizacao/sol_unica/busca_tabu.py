@@ -52,9 +52,6 @@ def busca_tabu_solucao(solucao_inicial_dim_cliente,dados_clientes,dados_plantas,
             intSemMelhoria += 1 
         
         atualizaTabu(tabu,validade_tabu)
-       # print(tabu)
-
-
             
         ind_maior_cliente_alocado = busca_maior(solucao_inicial_dim_cliente)  
 

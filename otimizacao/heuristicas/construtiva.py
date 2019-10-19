@@ -1,10 +1,8 @@
-# from filecmp import cmp
+from filecmp import cmp
 
-# from Tools.demo.sortvisu import quicksort
+from Tools.demo.sortvisu import quicksort
 from config import*
-from funcoes_auxiliares import*
 
-from otimizacao.funcoes_auxiliares import quickSort
 
 
 def sol_min(dados_clientes, solucao):
@@ -14,14 +12,14 @@ def sol_min(dados_clientes, solucao):
         solucao['custo'][i] = dados_clientes['custo'][i][indice]
         dados_clientes['disponivel'][i] = 0
 
-
 #Função que inicia o vetor que conterá a solução
 def _iniSolucao(solucao, dados_clientes):
     for i in range(0, len(dados_clientes['demanda'])):
         solucao['instalacao'].append(0)
         solucao['custo'].append(0)
+# o objetivo dessa função é escolher instalações que tenham capacidade de atender os clientes
 
-def _gera_solucao_minima(dados_clientes, dados_instalacoes, multiplicador, escolha_tipo_ordenacao):# o objetivo dessa função é escolher instalações que tenham capacidade de atender os clientes
+def _gera_solucao_minima(dados_clientes, dados_instalacoes, multiplicador, escolha_tipo_ordenacao):
     total_demanda_cliente = sum(dados_clientes['demanda'])
     total_demanda_instalacoes = 0
     copia_instalacoes_ordenadas = copy.deepcopy(dict(dados_instalacoes))
@@ -56,7 +54,8 @@ def _solucao_gulosa_delimitada_demanda(dados_clientes, dados_plantas, solucao):
     if(i>15):
         print("Solução não encontrada")
 
-def _ajusta_insta_clientes(instalacoes, clientes_plantas, insta, pos_insta_cliente, menor_demanda): #Se a instalação não couber mais clientes, a remove e adiciona para cada cliente na posição dessa instalação um valor que a torne inviável
+#Se a instalação não couber mais clientes, a remove e adiciona para cada cliente na posição dessa instalação um valor que a torne inviável
+def _ajusta_insta_clientes(instalacoes, clientes_plantas, insta, pos_insta_cliente, menor_demanda): 
     if (instalacoes['capacidade'][insta] - menor_demanda < 0):
         del (instalacoes['capacidade'][insta])
         del (instalacoes['posicao'][insta])
@@ -64,13 +63,15 @@ def _ajusta_insta_clientes(instalacoes, clientes_plantas, insta, pos_insta_clien
         for i in range(0, len(clientes_plantas['demanda'])):
             clientes_plantas['custo'][i][pos_insta_cliente] = 100000
 
-def _retira_instalacoes(clientes_plantas, plantas_esolhidas):#Para as instalações escolhidas para não fazer parte atribui 10.000 como valor de alocação
+#Para as instalações escolhidas para não fazer parte atribui 10.000 como valor de alocação
+def _retira_instalacoes(clientes_plantas, plantas_esolhidas):
 
     for j in range(0, len(plantas_esolhidas)):
             for i in range(0, len(clientes_plantas['demanda'])):
                 clientes_plantas['custo'][i][plantas_esolhidas[j]] = 100000
 
-def _adiciona_instalacoes(copia_dados_clientes, dados_clientes, instalacoes): #caso ele chegue num ponto de ter passado por todas as instalações, vai ser necessário recolocar os valores
+#caso ele chegue num ponto de ter passado por todas as instalações, vai ser necessário recolocar os valores
+def _adiciona_instalacoes(copia_dados_clientes, dados_clientes, instalacoes): 
 
     for j in range(0, len(instalacoes['capacidade'])):
         for i in range(0, len(copia_dados_clientes['demanda'])):
@@ -209,7 +210,6 @@ def _solucao_gulosa(dados_clientes, dados_plantas, solucao):
 
     return solucao
 
-
 def _cliente_cabe(demanda_cliente, capacidade_planta, utilizado_plantas, planta_pos):
 
     total_c_cliente = utilizado_plantas[planta_pos] + demanda_cliente
@@ -221,11 +221,10 @@ def _cliente_cabe(demanda_cliente, capacidade_planta, utilizado_plantas, planta_
     return True
 
 #metodo construtivo aleatório
-def _solucao_aleatoria(dados_clientes, dados_plantas, solucao):
+def solucao_aleatoria(dados_clientes,solucao, dados_plantas):
     capacidade_plantas = copy.deepcopy(dados_plantas['capacidade'])
     demanda_clientes = copy.deepcopy(dados_clientes['demanda'])
     clientes_planta = [[] for item in range(0, len(capacidade_plantas))]
-    random.seed('semente3')
 
     clientes = [pos for pos in range(0, len(demanda_clientes))]
     plantas = [pos for pos in range(0, len(capacidade_plantas))]
