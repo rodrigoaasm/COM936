@@ -2,6 +2,7 @@ import sys
 import traceback
 
 import numpy as np
+from config import * 
 
 #chama e faz a medida da função construtiva definida no config.py
 def criaSolInicial(dados_clientes, dados_plantas, solucao):
@@ -29,6 +30,13 @@ def criaSolInicial(dados_clientes, dados_plantas, solucao):
              #   print(" Cliente: %d - Insta: %d - Custo: %d" % (i, solucao['instalacao'][i], solucao['custo'][i]))
 
             print("Valor: %d "%calcula_funcao_objetivo(solucao, dados_plantas))
+
+#Função que inicia o vetor que conterá a solução
+def _iniSolucao( dados_clientes):
+    for i in range(0, len(dados_clientes['demanda'])):
+        solucao['instalacao'].append(0)
+        solucao['custo'].append(0)
+    return solucao
 
 #Pega um valor expecifico de qualquer dicionario, de forma a ser genérico
 def getValor(dados_clientes, dados_plantas, solucao, tipo, pos):#tipo terá duas funcionalidades, 1- dizer se é para cliente ou para instalacoes

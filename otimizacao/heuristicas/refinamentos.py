@@ -1,6 +1,6 @@
 from time import time
-from solucao import *
-from funcoes_auxiliares import*
+from auxiliares.funcoes_avaliacao import *
+from auxiliares.funcoes_auxiliares import *
 
 #gera um conjunto de vizinhos por diversificação e busca melhor solução
 def busca_local_por_diversificacao(solucao_inicial_dim_cliente,solucao_inicial_dim_insta,dados_plantas,dados_clientes,vetor_uso_demanda,ind_cliente,first,sentido):

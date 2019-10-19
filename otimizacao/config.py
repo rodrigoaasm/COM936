@@ -6,23 +6,24 @@ inst = "p55"
 
 caminho = "../dataset/" + inst + ".txt"
 
-<<<<<<< .mine
-validade_tabu = 400
+solucao = {
+    'instalacao': [],
+    'custo': []
+}
 
-=======
-validade_tabu = 4
-max_tentativas = 10
->>>>>>> .theirs
+validade_tabu = 20
+max_int_tabu = 400
 
 # Possiveis
 #   'gulosa'
 #   'aleatoria'
 #   'hibrida'
 
-random.seed(3)
+random.seed(5)
 
 estrategia = 'gulosa'
 
 estrategias = ['gulosa']
 
 erros_solucao = []
+

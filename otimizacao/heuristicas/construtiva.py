@@ -2,8 +2,7 @@ from filecmp import cmp
 
 from Tools.demo.sortvisu import quicksort
 from config import*
-
-
+from auxiliares.funcoes_auxiliares import *
 
 def sol_min(dados_clientes, solucao):
     for i in range(0, len(dados_clientes['demanda'])):
@@ -11,13 +10,6 @@ def sol_min(dados_clientes, solucao):
         solucao['instalacao'][i] = indice
         solucao['custo'][i] = dados_clientes['custo'][i][indice]
         dados_clientes['disponivel'][i] = 0
-
-#Função que inicia o vetor que conterá a solução
-def _iniSolucao(solucao, dados_clientes):
-    for i in range(0, len(dados_clientes['demanda'])):
-        solucao['instalacao'].append(0)
-        solucao['custo'].append(0)
-# o objetivo dessa função é escolher instalações que tenham capacidade de atender os clientes
 
 def _gera_solucao_minima(dados_clientes, dados_instalacoes, multiplicador, escolha_tipo_ordenacao):
     total_demanda_cliente = sum(dados_clientes['demanda'])
@@ -163,7 +155,7 @@ def _solucao_gulosa_2(dados_clientes, dados_plantas, solucao, plantas_escolhidas
     return state
 
 #Metodo construtivo guloso
-def _solucao_gulosa(dados_clientes, dados_plantas, solucao):
+def solucao_gulosa(dados_clientes, dados_plantas, solucao):
     print('----------SOLUÇÃO GULOSA----------')
 
     instalacao = 0 #ira pegar a instalação da posição inicial
@@ -221,7 +213,7 @@ def _cliente_cabe(demanda_cliente, capacidade_planta, utilizado_plantas, planta_
     return True
 
 #metodo construtivo aleatório
-def solucao_aleatoria(dados_clientes,solucao, dados_plantas):
+def solucao_aleatoria(dados_clientes,solucao, dados_plantas):    
     capacidade_plantas = copy.deepcopy(dados_plantas['capacidade'])
     demanda_clientes = copy.deepcopy(dados_clientes['demanda'])
     clientes_planta = [[] for item in range(0, len(capacidade_plantas))]

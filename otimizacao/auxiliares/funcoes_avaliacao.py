@@ -1,10 +1,7 @@
 from time import time
 
 from config import *
-from construtiva import _solucao_gulosa
-from construtiva import _solucao_gulosa_2
-from construtiva import _solucao_gulosa_delimitada_demanda
-from construtiva import _iniSolucao
+
 
 #Função que calcula a função objetivo, ou seja, o custo de abertura das instalações mais de alocação de cada cliente
 def calcula_funcao_objetivo(solucao, dados_plantas):
@@ -28,9 +25,10 @@ def avalia_restricao(vetor_demandas_atendidas,dados_plantas):
 def busca_maior(solucao_inicial):
    ind_maior = -1
    maior_valor = -1
-   for i in range(0,len(solucao_inicial['instalacao'])):
+   for i in range(0,len(solucao_inicial['instalacao'])):      
       if(solucao_inicial['custo'][i] > maior_valor and solucao_inicial['flag_uso'][i] != 1):    
          maior_valor = solucao_inicial['custo'][i]
+         ind_maior = i
    return ind_maior  
 
 #Cria um vetor p/ armezenar as alocações
@@ -40,4 +38,4 @@ def calcula_uso_demanda(solucao,dados_plantas,dados_clientes):
       vetor_gasto_demanda[solucao['instalacao'][i]] += dados_clientes['demanda'][i]
    return vetor_gasto_demanda
 
- 
+

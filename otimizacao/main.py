@@ -1,97 +1,52 @@
-import traceback as tb
-import numpy as np
-import time as time
-import sys
-import config
-from datetime import datetime
 
 from config import *
-from entrada_saida import *
-from funcoes_auxiliares import*
-from solucao import*
-from construtiva import*
-from refinamentos import*
-from busca_tabu import *
-
+from auxiliares.funcoes_entrada_saida import *
+from auxiliares.funcoes_auxiliares import *
+from auxiliares.funcoes_auxiliares import _iniSolucao
+from auxiliares.funcoes_avaliacao import *
+from heuristicas.construtiva import *
+from heuristicas.refinamentos import *
+from sol_unica.busca_tabu import *
 
 if __name__ == '__main__':
-    for v in range(4, 5):
-        validade_tabu = v
-        for p in range(1, 58): #para executar para todos os datasets basta colocar 58 no fim do range
-            print('------P{}--------------------------------------------'.format(p))
 
-<<<<<<< .mine
     dados_clientes, dados_plantas, solucao = zera_vetores()
     caminho = "../dataset/p3.txt"
    
+    print("Lendo Dataset...")
     entrada_dados(dados_clientes,dados_plantas, caminho)
 
-    solucao = solucao_aleatoria(dados_clientes, solucao,dados_plantas)
+    print("Iniciando Solucao Inicial..")
+    solucao_ini = _iniSolucao(dados_clientes) #inicia o array de solucao.    
+    #solucao_ini = solucao_aleatoria(dados_clientes, solucao_ini,dados_plantas)   
+    solucao_gulosa(dados_clientes, dados_plantas, solucao_ini)
 
-    solucao_dim_insta = cria_vetor_solucao(solucao,dados_plantas)
+    print("Buscando melhor solucao por tabu..")
+    solucao_ini = busca_tabu_solucao(solucao_ini,dados_clientes,dados_plantas,max_int_tabu,validade_tabu)    
+    print(calcula_funcao_objetivo(solucao_ini,dados_plantas))
 
-    print(solucao_dim_insta)
+    print("Refinando..")
+    solucao_ini = refina_sem_abrir(solucao_ini,dados_clientes,dados_plantas,False)    
+    print(calcula_funcao_objetivo(solucao_ini,dados_plantas))
 
-    '''
-    for p in range(1, 58): #para executar para todos os datasets basta colocar 58 no fim do range
-        print('------P{}--------------------------------------------'.format(p))
-        dados_clientes, dados_plantas, solucao = zera_vetores()
-        caminho = "../dataset/p" + str(p) + ".txt"
-   
-        entrada_dados(dados_clientes,dados_plantas, caminho)
-=======
-            dados_clientes, dados_plantas, solucao = zera_vetores()
-            caminho = "../dataset/p" + str(p) + ".txt"
+    print(cria_vetor_solucao(solucao_ini,dados_plantas))
 
 
+'''
 
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> .theirs
-
-<<<<<<< .mine
         hora_inicio = time.time()
         criaSolInicial(dados_clientes,dados_plantas,solucao)        
         solucao = busca_tabu_solucao(solucao,dados_clientes,dados_plantas,400,validade_tabu)
         solucao = refina_sem_abrir(solucao,dados_clientes,dados_plantas,False)  
         hora_fim = time.time()
-=======
-            entrada_dados(dados_clientes,dados_plantas, caminho)
-            criaSolInicial(dados_clientes,dados_plantas,solucao)
-            #solucao = chama_refinamento(solucao,dados_clientes,dados_plantas,False)
-            #solucao = cria_vetor_solucao(solucao,dados_plantas)
-            #print(calcula_funcao_objetivo(solucao,dados_plantas))
->>>>>>> .theirs
 
-<<<<<<< .mine
         tempo_execucao = hora_fim - hora_inicio   
 
         print("Busca tabu:")
         print(solucao['total'])
-        print('Tempo de execução da estratégia refinamento: {}ms'.format(tempo_execucao)) 
+        print('Tempo de execuï¿½ï¿½o da estratï¿½gia refinamento: {}ms'.format(tempo_execucao)) 
         #saida_dados_format(solucao)
-=======
-            fobjAnt = calcula_funcao_objetivo(solucao,dados_plantas)
 
-
-
-
-
->>>>>>> .theirs
-
-<<<<<<< .mine
-        '''
 
         #try:
         #    criaSolInicial(dados_clientes, dados_plantas, solucao)
@@ -104,7 +59,7 @@ if __name__ == '__main__':
         #print('p{} -->  {}'.format(p, solucao))
         #solucao = formataSaida(solucao,dados_plantas)
         #print(solucao)
-=======
+
             tentativas = 0
             hora_inicio = datetime.now()
             while(True):
@@ -118,7 +73,6 @@ if __name__ == '__main__':
                 solucao = refina_sem_abrir(solucao,dados_clientes,dados_plantas,False)
 
 
->>>>>>> .theirs
 
                 if (fobjAnt > solucao['total']) or tentativas == max_tentativas:
                     break
@@ -143,5 +97,5 @@ if __name__ == '__main__':
             #print('p{} -->  {}'.format(p, solucao))
             #solucao = formataSaida(solucao,dados_plantas)
             #print(solucao)
-
+'''
 

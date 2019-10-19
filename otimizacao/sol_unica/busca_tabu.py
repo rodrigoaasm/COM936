@@ -1,5 +1,5 @@
 
-from solucao import *
+from auxiliares.funcoes_avaliacao import *
 
 import time as time
 
@@ -16,20 +16,22 @@ def busca_tabu_solucao(solucao_inicial_dim_cliente,dados_clientes,dados_plantas,
     solucao_inicial_dim_cliente['total'] = calcula_funcao_objetivo(solucao_inicial_dim_cliente, dados_plantas)
     #guarda solucao inicial como a melhor 
     melhor_solucao = solucao_inicial_dim_cliente
-    solucao_inicial_dim_cliente['em_restricao'] = True
+    #solucao_inicial_dim_cliente['em_restricao'] = True
     #inicia sistema de flag
     solucao_inicial_dim_cliente['flag_uso'] = np.zeros(len(dados_clientes['demanda']))
     #cria vetor de demanda usadas
     vetor_uso_demanda_insta = calcula_uso_demanda(solucao_inicial_dim_cliente,dados_plantas,dados_clientes)     
+    
 
     tabu = dict() 
     tabu_s = 0
     
     #busca maior cliente alocado no momento
     ind_maior_cliente_alocado = busca_maior(solucao_inicial_dim_cliente)
-            
+                 
     #se achar um maior que possa ser movimentado
-    while(ind_maior_cliente_alocado >= 0 and intSemMelhoria < maxIntSemMelhorias):        
+    while(ind_maior_cliente_alocado >= 0 and intSemMelhoria < maxIntSemMelhorias):  
+              
         (solucao_inicial_dim_cliente, vetor_uso_demanda_insta,tabu) = gera_vizinhos(solucao_inicial_dim_cliente,
                                                                                     dados_plantas,
                                                                                     dados_clientes,
@@ -45,7 +47,7 @@ def busca_tabu_solucao(solucao_inicial_dim_cliente,dados_clientes,dados_plantas,
             solucao_inicial_dim_cliente['flag_uso'][ind_maior_cliente_alocado] = 1        
 
         #se houve melhorias atualiza melhor estado e zera contador de intervalos sem melhoria
-        if(solucao_inicial_dim_cliente['total'] < melhor_solucao['total'] and solucao_inicial_dim_cliente['em_restricao']):            
+        if(solucao_inicial_dim_cliente['total'] < melhor_solucao['total']):            
             melhor_solucao = solucao_inicial_dim_cliente         
             intSemMelhoria = 0             
         else:
@@ -53,7 +55,7 @@ def busca_tabu_solucao(solucao_inicial_dim_cliente,dados_clientes,dados_plantas,
         
         atualizaTabu(tabu,validade_tabu)
             
-        ind_maior_cliente_alocado = busca_maior(solucao_inicial_dim_cliente)  
+        ind_maior_cliente_alocado = busca_maior(solucao_inicial_dim_cliente)        
 
     return melhor_solucao 
 
