@@ -4,7 +4,9 @@ from auxiliares.funcoes_entrada_saida import *
 from auxiliares.funcoes_auxiliares import *
 from auxiliares.funcoes_auxiliares import _iniSolucao
 from auxiliares.funcoes_avaliacao import *
-from heuristicas.construtiva import *
+from heuristicas.construtivo_hibrido import *
+from heuristicas.construtivo_guloso import *
+from heuristicas.construtivo_aleatorio import *
 from heuristicas.refinamentos import *
 from sol_unica.busca_tabu import *
 
@@ -19,7 +21,7 @@ if __name__ == '__main__':
     print("Iniciando Solucao Inicial..")
     solucao_ini = _iniSolucao(dados_clientes) #inicia o array de solucao.    
     #solucao_ini = solucao_aleatoria(dados_clientes, solucao_ini,dados_plantas)   
-    solucao_gulosa(dados_clientes, dados_plantas, solucao_ini)
+    solucao_gulosa_delimitada_demanda(dados_clientes, dados_plantas, solucao_ini)
 
     print("Buscando melhor solucao por tabu..")
     solucao_ini = busca_tabu_solucao(solucao_ini,dados_clientes,dados_plantas,max_int_tabu,validade_tabu)    

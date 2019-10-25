@@ -1,3 +1,4 @@
+import copy
 from time import time
 from auxiliares.funcoes_avaliacao import *
 from auxiliares.funcoes_auxiliares import *

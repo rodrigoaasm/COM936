@@ -1,4 +1,6 @@
+import copy
 
+import numpy as np
 from auxiliares.funcoes_avaliacao import *
 
 import time as time
