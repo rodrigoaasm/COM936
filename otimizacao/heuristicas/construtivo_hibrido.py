@@ -1,4 +1,5 @@
 import copy
+import random
 
 from config import*
 from auxiliares.funcoes_auxiliares import *
@@ -29,8 +30,33 @@ def _gera_solucao_minima(dados_clientes, dados_instalacoes, multiplicador, escol
 
     return instalacoes_escolhidas
 
-def solucao_gulosa_delimitada_demanda(dados_clientes, dados_plantas, solucao):
-    print('----------SOLUÇÃO Hibrído----------')
+def _retira_instalacao_aleatoria(qtd_instalacoes, qtd_instalacoes_removidas):
+    instalacoes_escolhidas = []
+    for i in range(0, qtd_instalacoes_removidas):
+        insta = random.randint(0, qtd_instalacoes-1)
+        if(not instalacoes_escolhidas.__contains__(insta)):
+            instalacoes_escolhidas.append(insta)
+
+    return instalacoes_escolhidas
+
+
+def solucao_gulosa_2_aleatoria(dados_clientes, dados_plantas, solucao, seed, num_insta):
+    print('----------SOLUÇÃO HIBRÍDA----------')
+    state = 0
+    i = 0
+    random.seed(seed)
+
+    while(state == 0):
+        instalacoes_escolhidas = _retira_instalacao_aleatoria(len(dados_plantas["capacidade"]), num_insta)
+        state = solucao_gulosa_2(dados_clientes, dados_plantas, solucao, instalacoes_escolhidas)
+        i += 1
+        num_insta -= 1
+        if(i > 15 or num_insta < 0):
+            break
+
+
+def solucao_gulosa_2_automatica(dados_clientes, dados_plantas, solucao):
+    print('----------SOLUÇÃO GULOSA----------')
     state = 0
     i = 0
     multiplicador = 1
