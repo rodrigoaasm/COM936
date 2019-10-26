@@ -52,10 +52,13 @@ def solucao_gulosa_2_aleatoria(dados_clientes, dados_plantas, solucao, seed, num
         state = solucao_gulosa_2(dados_clientes, dados_plantas, solucao, instalacoes_escolhidas)
         i += 1
         num_insta -= 1#caso a particula não tenha sido viável, tentará cria-la novamente mas com uma instalação a menos
-        if (i > 15 or num_insta < 0):
+
+        if (i > 30 or num_insta < 0): # verifica se alcançou 30 interações sem sucesso ou se já não tem mais instalações para remover
             break
 
-        instalacoes_escolhidas.remove(instalacoes_escolhidas[num_insta])
+        if state == 0: # se verificar que a interação não trouxe uma solução factível, retira uma instalação e tentará novamente
+            instalacoes_removidas.remove(instalacoes_escolhidas[num_insta])
+            instalacoes_escolhidas.remove(instalacoes_escolhidas[num_insta])
 
 
 def solucao_gulosa_2_automatica(dados_clientes, dados_plantas, solucao):
