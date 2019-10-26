@@ -30,29 +30,32 @@ def _gera_solucao_minima(dados_clientes, dados_instalacoes, multiplicador, escol
 
     return instalacoes_escolhidas
 
-def _retira_instalacao_aleatoria(qtd_instalacoes, qtd_instalacoes_removidas):
-    instalacoes_escolhidas = []
-    for i in range(0, qtd_instalacoes_removidas):
+def _retira_instalacao_aleatoria(qtd_instalacoes, qtd_instalacoes_removidas, instalacoes_removidas):
+    instalacoes_escolhidas = [] #função que seleciona as instalações a ser removida de uma particula de forma aleatória
+    while(len(instalacoes_escolhidas) != qtd_instalacoes_removidas):
         insta = random.randint(0, qtd_instalacoes-1)
-        if(not instalacoes_escolhidas.__contains__(insta)):
+        if(not instalacoes_removidas.__contains__(insta)):#verifica se a instalação escolhida já foi selecionada anteriormente
             instalacoes_escolhidas.append(insta)
+            instalacoes_removidas.append(insta)
 
     return instalacoes_escolhidas
 
 
-def solucao_gulosa_2_aleatoria(dados_clientes, dados_plantas, solucao, seed, num_insta):
-    print('----------SOLUÇÃO HIBRÍDA----------')
+def solucao_gulosa_2_aleatoria(dados_clientes, dados_plantas, solucao, seed, num_insta, instalacoes_removidas):
+    print('----------CONSTRUTIVA HIBRÍDA----------')
     state = 0
     i = 0
     random.seed(seed)
+    instalacoes_escolhidas = _retira_instalacao_aleatoria(len(dados_plantas["capacidade"]), num_insta,instalacoes_removidas)
 
-    while(state == 0):
-        instalacoes_escolhidas = _retira_instalacao_aleatoria(len(dados_plantas["capacidade"]), num_insta)
+    while(state == 0 ):
         state = solucao_gulosa_2(dados_clientes, dados_plantas, solucao, instalacoes_escolhidas)
         i += 1
-        num_insta -= 1
-        if(i > 15 or num_insta < 0):
+        num_insta -= 1#caso a particula não tenha sido viável, tentará cria-la novamente mas com uma instalação a menos
+        if (i > 15 or num_insta < 0):
             break
+
+        instalacoes_escolhidas.remove(instalacoes_escolhidas[num_insta])
 
 
 def solucao_gulosa_2_automatica(dados_clientes, dados_plantas, solucao):

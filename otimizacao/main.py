@@ -20,8 +20,9 @@ if __name__ == '__main__':
 
     print("Iniciando Solucao Inicial..")
     solucao_ini = _iniSolucao(dados_clientes) #inicia o array de solucao.    
-    #solucao_ini = solucao_aleatoria(dados_clientes, solucao_ini,dados_plantas)   
-    solucao_gulosa_2_aleatoria(dados_clientes, dados_plantas, solucao_ini, 1, 1)
+    #solucao_ini = solucao_aleatoria(dados_clientes, solucao_ini,dados_plantas)
+    instalacoes_removidas = [] #cria um vetor para armazenar as instalações que serão removidas nas particulas, faz isso para que não repetir a instalação fechada
+    solucao_gulosa_2_aleatoria(dados_clientes, dados_plantas, solucao_ini, 1, 1, instalacoes_removidas)
 
     print("Buscando melhor solucao por tabu..")
     solucao_ini = busca_tabu_solucao(solucao_ini,dados_clientes,dados_plantas,max_int_tabu,validade_tabu)    
