@@ -8,7 +8,8 @@ caminho = "../dataset/" + inst + ".txt"
 
 solucao = {
     'instalacao': [],
-    'custo': []
+    'custo': [],
+    'total' : int
 }
 
 validade_tabu = 20

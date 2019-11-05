@@ -33,6 +33,12 @@ def criaSolInicial(dados_clientes, dados_plantas, solucao):
 
 #Função que inicia o vetor que conterá a solução
 def _iniSolucao( dados_clientes):
+    solucao = {
+        'instalacao': [],
+        'custo': [],
+        'total' : int
+    }
+    
     for i in range(0, len(dados_clientes['demanda'])):
         solucao['instalacao'].append(0)
         solucao['custo'].append(0)

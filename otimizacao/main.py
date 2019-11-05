@@ -7,6 +7,7 @@ from auxiliares.funcoes_avaliacao import *
 from heuristicas.construtiva import *
 from heuristicas.refinamentos import *
 from sol_unica.busca_tabu import *
+from sol_populacional.pso import *
 
 if __name__ == '__main__':
 
@@ -16,7 +17,11 @@ if __name__ == '__main__':
     print("Lendo Dataset...")
     entrada_dados(dados_clientes,dados_plantas, caminho)
 
-    print("Iniciando Solucao Inicial..")
+    pso(dados_clientes,dados_plantas,5)
+
+
+
+''' print("Iniciando Solucao Inicial..")
     solucao_ini = _iniSolucao(dados_clientes) #inicia o array de solucao.    
     #solucao_ini = solucao_aleatoria(dados_clientes, solucao_ini,dados_plantas)   
     solucao_gulosa(dados_clientes, dados_plantas, solucao_ini)
@@ -29,7 +34,7 @@ if __name__ == '__main__':
     solucao_ini = refina_sem_abrir(solucao_ini,dados_clientes,dados_plantas,False)    
     print(calcula_funcao_objetivo(solucao_ini,dados_plantas))
 
-    print(cria_vetor_solucao(solucao_ini,dados_plantas))
+    print(cria_vetor_solucao(solucao_ini,dados_plantas))'''
 
 
 '''

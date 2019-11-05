@@ -246,6 +246,4 @@ def solucao_aleatoria(dados_clientes,solucao, dados_plantas):
             solucao['instalacao'][cliente] = planta_pos
             solucao['custo'][cliente] = dados_clientes['custo'][cliente][planta_pos]
 
-    print('CUSTO TOTAL ALEATORIO: {}'.format(custo_total))
-
     return solucao
