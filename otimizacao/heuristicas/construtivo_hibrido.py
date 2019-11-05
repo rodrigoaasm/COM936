@@ -1,6 +1,6 @@
-from filecmp import cmp
+import copy
+import random
 
-from Tools.demo.sortvisu import quicksort
 from config import*
 from auxiliares.funcoes_auxiliares import *
 
@@ -30,7 +30,39 @@ def _gera_solucao_minima(dados_clientes, dados_instalacoes, multiplicador, escol
 
     return instalacoes_escolhidas
 
-def _solucao_gulosa_delimitada_demanda(dados_clientes, dados_plantas, solucao):
+def _retira_instalacao_aleatoria(qtd_instalacoes, qtd_instalacoes_removidas, instalacoes_removidas):
+    instalacoes_escolhidas = [] #função que seleciona as instalações a ser removida de uma particula de forma aleatória
+    while(len(instalacoes_escolhidas) != qtd_instalacoes_removidas):
+        insta = random.randint(0, qtd_instalacoes-1)
+        if(not instalacoes_removidas.__contains__(insta)):#verifica se a instalação escolhida já foi selecionada anteriormente
+            instalacoes_escolhidas.append(insta)
+            instalacoes_removidas.append(insta)
+
+    return instalacoes_escolhidas
+
+
+def solucao_gulosa_2_aleatoria(dados_clientes, dados_plantas, solucao, seed, num_insta, instalacoes_removidas):
+    print('----------CONSTRUTIVA HIBRÍDA----------')
+    state = 0
+    i = 0
+    random.seed(seed)
+    instalacoes_escolhidas = _retira_instalacao_aleatoria(len(dados_plantas["capacidade"]), num_insta,instalacoes_removidas)
+
+    while(state == 0 ):
+        state = solucao_gulosa_2(dados_clientes, dados_plantas, solucao, instalacoes_escolhidas)
+        i += 1
+        num_insta -= 1#caso a particula não tenha sido viável, tentará cria-la novamente mas com uma instalação a menos
+
+        if (i > 30 or num_insta < 0): # verifica se alcançou 30 interações sem sucesso ou se já não tem mais instalações para remover
+            break
+
+        if state == 0: # se verificar que a interação não trouxe uma solução factível, retira uma instalação e tentará novamente
+            instalacoes_removidas.remove(instalacoes_escolhidas[num_insta])
+            instalacoes_escolhidas.remove(instalacoes_escolhidas[num_insta])
+
+
+def solucao_gulosa_2_automatica(dados_clientes, dados_plantas, solucao):
+    print('----------SOLUÇÃO GULOSA----------')
     state = 0
     i = 0
     multiplicador = 1
@@ -38,7 +70,7 @@ def _solucao_gulosa_delimitada_demanda(dados_clientes, dados_plantas, solucao):
     while(state == 0):
         instalacoes_escolhidas = _gera_solucao_minima(dados_clientes, dados_plantas, multiplicador, -3)
         multiplicador += 0.05
-        state = _solucao_gulosa_2(dados_clientes, dados_plantas, solucao, instalacoes_escolhidas)
+        state = solucao_gulosa_2(dados_clientes, dados_plantas, solucao, instalacoes_escolhidas)
         i += 1
         if(i > 10):
             break
@@ -47,7 +79,7 @@ def _solucao_gulosa_delimitada_demanda(dados_clientes, dados_plantas, solucao):
         print("Solução não encontrada")
 
 #Se a instalação não couber mais clientes, a remove e adiciona para cada cliente na posição dessa instalação um valor que a torne inviável
-def _ajusta_insta_clientes(instalacoes, clientes_plantas, insta, pos_insta_cliente, menor_demanda): 
+def _ajusta_insta_clientes(instalacoes, clientes_plantas, insta, pos_insta_cliente, menor_demanda):
     if (instalacoes['capacidade'][insta] - menor_demanda < 0):
         del (instalacoes['capacidade'][insta])
         del (instalacoes['posicao'][insta])
@@ -63,7 +95,7 @@ def _retira_instalacoes(clientes_plantas, plantas_esolhidas):
                 clientes_plantas['custo'][i][plantas_esolhidas[j]] = 100000
 
 #caso ele chegue num ponto de ter passado por todas as instalações, vai ser necessário recolocar os valores
-def _adiciona_instalacoes(copia_dados_clientes, dados_clientes, instalacoes): 
+def _adiciona_instalacoes(copia_dados_clientes, dados_clientes, instalacoes):
 
     for j in range(0, len(instalacoes['capacidade'])):
         for i in range(0, len(copia_dados_clientes['demanda'])):
@@ -83,7 +115,7 @@ def _atualiza_instalacoes_clientes(clientes_plantas, copia_dados_clientes, dados
     clientes_plantas['instalacao'][i] = indice
 
 #Método construtivo guloso versão 2.0
-def _solucao_gulosa_2(dados_clientes, dados_plantas, solucao, plantas_escolhidas):
+def solucao_gulosa_2(dados_clientes, dados_plantas, solucao, plantas_escolhidas):
     copia_dados_clientes = copy.deepcopy(dict(dados_clientes))
     instalacoes = copy.deepcopy(dict(dados_plantas))
 
@@ -153,6 +185,7 @@ def _solucao_gulosa_2(dados_clientes, dados_plantas, solucao, plantas_escolhidas
         state = 0
 
     return state
+<<<<<<< HEAD:otimizacao/heuristicas/construtiva.py
 
 #Metodo construtivo guloso
 def solucao_gulosa(dados_clientes, dados_plantas, solucao):
@@ -247,3 +280,5 @@ def solucao_aleatoria(dados_clientes,solucao, dados_plantas):
             solucao['custo'][cliente] = dados_clientes['custo'][cliente][planta_pos]
 
     return solucao
+=======
+>>>>>>> 9c459585bd8008db94e5925d5111db72ac42decc:otimizacao/heuristicas/construtivo_hibrido.py
