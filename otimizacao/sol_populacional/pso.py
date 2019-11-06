@@ -1,7 +1,7 @@
 
 from config import *
 from random import *
-from heuristicas.construtiva import *
+from heuristicas.construtivo_aleatorio import *
 from auxiliares.funcoes_avaliacao import *
 from auxiliares.funcoes_auxiliares import *
 from auxiliares.funcoes_auxiliares import _iniSolucao
@@ -14,19 +14,28 @@ def pso_init(dados_clientes,dados_plantas,numParticulas):
     velocidade = []
     maxRand = len(dados_clientes['demanda'])
 
+    lider = 0
+    objetivo_lider = 0
+
     for i in range(numParticulas):
         #cria particula
         particulas.append(_iniSolucao(dados_clientes))
-        solucao_aleatoria(dados_clientes,particulas[i], dados_plantas)
+        particulas[i] = solucao_aleatoria(dados_clientes, dados_plantas,particulas[i])
                  
         #calcula função objetivo e inicia melhor posição
         particulas[i]['total'] = calcula_funcao_objetivo(particulas[i],dados_plantas)
-        melhorPosicionamentoCadaParticula.append(particulas[i])
+        melhorPosicionamentoCadaParticula.append(copy.deepcopy(particulas[i]))
 
-        #gera velocidade da particula
-        velocidade.append(random.sample(range(0,maxRand), 2))
+        velocidade.append([[1,3]])
 
-    return (particulas,melhorPosicionamentoCadaParticula,velocidade)
+        if(i == 1):
+            objetivo_lider = particulas[i]['total']
+        elif(objetivo_lider > particulas[i]['total']):
+            lider = i
+            objetivo_lider = particulas[i]['total']
+
+    print("---")
+    return (particulas,melhorPosicionamentoCadaParticula,lider,velocidade)
 
 #define novas posições das particulas
 def defineNovaPosicao(particulas, melhores_posicionamento,velocidades_particulas,numParticulas,dados_clientes,dados_plantas):
@@ -34,22 +43,17 @@ def defineNovaPosicao(particulas, melhores_posicionamento,velocidades_particulas
     lider = 0
     objetivo_lider = 0
 
-    for i in range(numParticulas):
-        #faz a troca de posições
-        temp_ind_insta = particulas[i]['instalacao'][velocidades_particulas[i][0]]
-
-        particulas[i]['instalacao'][velocidades_particulas[i][0]] = particulas[i]['instalacao'][velocidades_particulas[i][1]]        
-        particulas[i]['custo'][velocidades_particulas[i][0]] = dados_clientes['custo'][velocidades_particulas[i][0]][particulas[i]['instalacao'][velocidades_particulas[i][1]]]
-        #fazer o calculo
-        particulas[i]['instalacao'][velocidades_particulas[i][1]] =  temp_ind_insta
-        particulas[i]['custo'][velocidades_particulas[i][1]] = dados_clientes['custo'][velocidades_particulas[i][1]][temp_ind_insta]
-        #fazer o calculo
+    for i in range(numParticulas):        
+        for tr in velocidades_particulas[i]:         
+            #faz a transferencia de instalação            
+            particulas[i]['instalacao'][tr[0]] = tr[1]
+            particulas[i]['custo'][tr[0]] = dados_clientes['custo'][tr[0]][tr[1]]
 
         particulas[i]['total'] = calcula_funcao_objetivo(particulas[i],dados_plantas)
 
         #Se a posição atual da particula for melhor que a melhor posição registrada, atual posição passa a ser a melhor
         if(melhores_posicionamento[i]['total'] > particulas[i]['total']):
-            melhores_posicionamento[i] = particulas[i]
+            melhores_posicionamento[i] = copy.deepcopy(particulas[i])        
 
         #se for a primeira particula e dada como a melhor
         if(i == 0):
@@ -59,15 +63,54 @@ def defineNovaPosicao(particulas, melhores_posicionamento,velocidades_particulas
             objetivo_lider = particulas[i]['total']
     return (lider)
 
+def diffPosicoes(vecta,vectb):
+    diff = []
+    for i in range(len(vecta)):
+        if(vecta[i] != vectb[i]):
+            diff.append([i,vectb[i]]) 
+
+    return diff
+
+#Metodo principal 
+def calculaNovasVelocidade(particulas,melhores_posicionamento,lider,const_soc,const_ind,numParticulas,velocidades_particulas):
+    
+    for i in range(numParticulas):
+        diff_ind = diffPosicoes(particulas[i]['instalacao'],melhores_posicionamento[i]['instalacao'])
+        try:
+            velocidades_particulas[i] = random.sample(diff_ind,const_ind)     
+        except:
+            velocidades_particulas[i] = diff_ind
+
+        diff_lid = diffPosicoes(particulas[i]['instalacao'],particulas[lider]['instalacao'])
+        try:
+            velocidades_particulas[i] += random.sample(diff_lid,const_soc)     
+        except:
+            velocidades_particulas[i] += diff_lid
+
+    return velocidades_particulas
+
+
 
 #Metodo principal do pso
-def pso (dados_clientes,dados_plantas,numParticulas,numCiclos):
+def pso (dados_clientes,dados_plantas,numParticulas,numCiclos,const_soc,const_ind):
 
-    for i in range(0,numCiclos):
-        #instancia dados das particulas
-        (particulas, melhores_posicionamento,velocidades_particulas) = pso_init(dados_clientes,dados_plantas,numParticulas)
-        
+    #instancia dados das particulas
+    (particulas, melhores_posicionamento,lider,velocidades_particulas) = pso_init(dados_clientes,dados_plantas,numParticulas)
+    #Inicia velocidades das particulas
+    velocidades_particulas = calculaNovasVelocidade(particulas,melhores_posicionamento,lider,const_soc,const_ind,numParticulas,velocidades_particulas)
+
+    t = []
+    for pos in melhores_posicionamento:
+        t.append(pos['total'])
+    print(t)
+
+    for i in range(0,numCiclos):                
         lider = defineNovaPosicao(particulas, melhores_posicionamento,velocidades_particulas,numParticulas,dados_clientes,dados_plantas)
+        velocidades_particulas = calculaNovasVelocidade(particulas,melhores_posicionamento,lider,2,2,numParticulas,velocidades_particulas)
+    
+        t = []
+        for pos in melhores_posicionamento:
+            t.append(pos['total'])
+        print(t)
 
-    
-    
+    return melhores_posicionamento

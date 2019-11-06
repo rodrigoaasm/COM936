@@ -15,13 +15,12 @@ if __name__ == '__main__':
 
     dados_clientes, dados_plantas, solucao = zera_vetores()
     caminho = "../dataset/p3.txt"
-   
+
     print("Lendo Dataset...")
     entrada_dados(dados_clientes,dados_plantas, caminho)
 
-    pso(dados_clientes,dados_plantas,5)
-
-
+    solucoes_elite = pso(dados_clientes,dados_plantas,5,2000,1,1)
+    
 
 ''' print("Iniciando Solucao Inicial..")
     solucao_ini = _iniSolucao(dados_clientes) #inicia o array de solucao.    

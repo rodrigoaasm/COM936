@@ -15,6 +15,7 @@ def _cliente_cabe(demanda_cliente, capacidade_planta, utilizado_plantas, planta_
 
 #metodo construtivo aleatório
 def solucao_aleatoria(dados_clientes, dados_plantas, solucao):
+
     capacidade_plantas = copy.deepcopy(dados_plantas['capacidade'])
     demanda_clientes = copy.deepcopy(dados_clientes['demanda'])
     clientes_planta = [[] for item in range(0, len(capacidade_plantas))]
@@ -46,7 +47,5 @@ def solucao_aleatoria(dados_clientes, dados_plantas, solucao):
         for cliente in clientes_planta[planta_pos]:
             solucao['instalacao'][cliente] = planta_pos
             solucao['custo'][cliente] = dados_clientes['custo'][cliente][planta_pos]
-
-    print('CUSTO TOTAL ALEATORIO: {}'.format(custo_total))
 
     return solucao
