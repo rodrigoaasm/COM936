@@ -36,7 +36,8 @@ def _iniSolucao( dados_clientes):
     solucao = {
         'instalacao': [],
         'custo': [],
-        'total' : int
+        'total' : int,
+        'uso_demanda' : []
     }
     
     for i in range(0, len(dados_clientes['demanda'])):
@@ -113,7 +114,7 @@ def calcula_cxb(dados_plantas):
         dados_plantas['cxb'].append(dados_plantas['capacidade'][i] /
                                   dados_plantas['custo'][i])
 
-def cria_vetor_solucao(unform_sol,dados_plantas):
+def formata_solucao(unform_sol,dados_plantas):
     listFormat =[ [] for i in range(0,len(dados_plantas['custo'])) ]
     
     for i in range(0,len(unform_sol['instalacao'])):

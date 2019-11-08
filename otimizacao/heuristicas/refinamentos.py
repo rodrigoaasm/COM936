@@ -79,7 +79,7 @@ def busca_local_por_diversificacao(solucao_inicial_dim_cliente,solucao_inicial_d
 def refina_sem_abrir(solucao_inicial_dim_cliente,dados_clientes,dados_plantas,first):
   
    #cria dimensão das instalações
-   solucao_inicial_dim_insta = cria_vetor_solucao(solucao_inicial_dim_cliente,dados_plantas)
+   solucao_inicial_dim_insta = formata_solucao(solucao_inicial_dim_cliente,dados_plantas)
    #calcula função objetivo 
    solucao_inicial_dim_cliente['total'] = calcula_funcao_objetivo(solucao_inicial_dim_cliente, dados_plantas)
    #cria vetor de demanda usadas
@@ -99,7 +99,7 @@ def refina_sem_abrir(solucao_inicial_dim_cliente,dados_clientes,dados_plantas,fi
                                                          first,
                                                          flag_sentido)  
          
-      solucao_inicial_dim_insta = cria_vetor_solucao(solucao_inicial_dim_cliente,dados_plantas)
+      solucao_inicial_dim_insta = formata_solucao(solucao_inicial_dim_cliente,dados_plantas)
                                                  
       #Inverte o sentido se for metodo first
       if(first):

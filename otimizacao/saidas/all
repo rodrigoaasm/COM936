@@ -1,0 +1,270 @@
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 1 
+p3 1 => time: 8.39175534248352 s	fitness: 6209
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 2 
+p3 2 => time: 9.513514280319214 s	fitness: 6114
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 3 
+p3 3 => time: 8.344918012619019 s	fitness: 6242
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 4 
+p3 4 => time: 9.344831228256226 s	fitness: 6397
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 5 
+p3 5 => time: 8.419458627700806 s	fitness: 6303
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 6 
+p3 6 => time: 8.08028244972229 s	fitness: 6216
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 7 
+p3 7 => time: 8.265230417251587 s	fitness: 6278
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 8 
+p3 8 => time: 8.128802299499512 s	fitness: 6263
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 9 
+p3 9 => time: 8.043660163879395 s	fitness: 6226
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 10 
+p3 10 => time: 8.588125944137573 s	fitness: 6215
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 11 
+p3 11 => time: 9.036518573760986 s	fitness: 6310
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 12 
+p3 12 => time: 8.377168416976929 s	fitness: 6227
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 13 
+p3 13 => time: 8.084892988204956 s	fitness: 6234
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 14 
+p3 14 => time: 9.251662969589233 s	fitness: 6186
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 15 
+p3 15 => time: 9.491807699203491 s	fitness: 6242
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 16 
+p3 16 => time: 8.287270307540894 s	fitness: 6166
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 17 
+p3 17 => time: 10.961036682128906 s	fitness: 6121
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 18 
+p3 18 => time: 9.691328287124634 s	fitness: 6378
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 19 
+p3 19 => time: 8.19697618484497 s	fitness: 6634
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 20 
+p3 20 => time: 8.284077882766724 s	fitness: 6202
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 21 
+p3 21 => time: 8.266223192214966 s	fitness: 6246
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 22 
+p3 22 => time: 9.960076332092285 s	fitness: 6177
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 23 
+p3 23 => time: 13.84457802772522 s	fitness: 6266
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 24 
+p3 24 => time: 8.428864002227783 s	fitness: 6231
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 25 
+p3 25 => time: 8.01096773147583 s	fitness: 6195
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 26 
+p3 26 => time: 7.944682598114014 s	fitness: 6258
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 27 
+p3 27 => time: 8.132867813110352 s	fitness: 6228
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 28 
+p3 28 => time: 8.392329454421997 s	fitness: 6379
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 29 
+p3 29 => time: 10.16610598564148 s	fitness: 6218
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p3 30 
+p3 30 => time: 8.863178253173828 s	fitness: 6124
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 1 
+p28 1 => time: 17.667086362838745 s	fitness: 12381
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 2 
+p28 2 => time: 18.663705110549927 s	fitness: 12135
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 3 
+p28 3 => time: 21.051114559173584 s	fitness: 12621
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 4 
+p28 4 => time: 17.847492694854736 s	fitness: 12759
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 5 
+p28 5 => time: 17.205028295516968 s	fitness: 12363
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 6 
+p28 6 => time: 18.93528127670288 s	fitness: 12775
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 7 
+p28 7 => time: 18.116631746292114 s	fitness: 12310
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 8 
+p28 8 => time: 17.441869020462036 s	fitness: 13167
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 9 
+p28 9 => time: 18.464102268218994 s	fitness: 11992
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 10 
+p28 10 => time: 20.768759965896606 s	fitness: 12391
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 11 
+p28 11 => time: 17.551100254058838 s	fitness: 12922
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 12 
+p28 12 => time: 17.515611171722412 s	fitness: 13143
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 13 
+p28 13 => time: 18.85822081565857 s	fitness: 12636
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 14 
+p28 14 => time: 17.339707851409912 s	fitness: 12438
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 15 
+p28 15 => time: 17.798949003219604 s	fitness: 12430
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 16 
+p28 16 => time: 19.53718090057373 s	fitness: 12683
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 17 
+p28 17 => time: 17.75125241279602 s	fitness: 12818
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 18 
+p28 18 => time: 17.362116813659668 s	fitness: 11921
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 19 
+p28 19 => time: 19.5817973613739 s	fitness: 12751
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 20 
+p28 20 => time: 18.39963984489441 s	fitness: 13272
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 21 
+p28 21 => time: 17.123332977294922 s	fitness: 12081
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 22 
+p28 22 => time: 18.325865745544434 s	fitness: 12623
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 23 
+p28 23 => time: 17.708611488342285 s	fitness: 13138
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 24 
+p28 24 => time: 17.623690843582153 s	fitness: 13022
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 25 
+p28 25 => time: 18.63307523727417 s	fitness: 12982
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 26 
+p28 26 => time: 18.28461790084839 s	fitness: 13010
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 27 
+p28 27 => time: 17.581068992614746 s	fitness: 12988
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 28 
+p28 28 => time: 18.4521005153656 s	fitness: 12334
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 29 
+p28 29 => time: 18.991371393203735 s	fitness: 12579
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p28 30 
+p28 30 => time: 18.654921531677246 s	fitness: 12461
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 1 
+p55 1 => time: 37.026344299316406 s	fitness: 91938
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 2 
+p55 2 => time: 35.27946162223816 s	fitness: 93285
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 3 
+p55 3 => time: 36.50472688674927 s	fitness: 93620
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 4 
+p55 4 => time: 36.36984086036682 s	fitness: 90802
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 5 
+p55 5 => time: 37.21752619743347 s	fitness: 99254
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 6 
+p55 6 => time: 33.85557842254639 s	fitness: 92081
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 7 
+p55 7 => time: 36.38134407997131 s	fitness: 97086
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 8 
+p55 8 => time: 35.96519088745117 s	fitness: 94861
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 9 
+p55 9 => time: 37.93036365509033 s	fitness: 99891
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 10 
+p55 10 => time: 32.49312877655029 s	fitness: 88659
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 11 
+p55 11 => time: 33.749709606170654 s	fitness: 96937
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 12 
+p55 12 => time: 32.97196078300476 s	fitness: 89957
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 13 
+p55 13 => time: 35.41329526901245 s	fitness: 96699
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 14 
+p55 14 => time: 34.14469122886658 s	fitness: 96107
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 15 
+p55 15 => time: 34.51370334625244 s	fitness: 94483
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 16 
+p55 16 => time: 35.91598439216614 s	fitness: 95490
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 17 
+p55 17 => time: 33.42177438735962 s	fitness: 96488
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 18 
+p55 18 => time: 33.70989155769348 s	fitness: 88435
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 19 
+p55 19 => time: 34.569554805755615 s	fitness: 95427
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 20 
+p55 20 => time: 33.96420764923096 s	fitness: 94934
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 21 
+p55 21 => time: 38.02542495727539 s	fitness: 96971
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 22 
+p55 22 => time: 33.84350371360779 s	fitness: 99175
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 23 
+p55 23 => time: 34.955528020858765 s	fitness: 93910
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 24 
+p55 24 => time: 33.22927117347717 s	fitness: 95661
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 25 
+p55 25 => time: 35.22092270851135 s	fitness: 90818
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 26 
+p55 26 => time: 35.831180810928345 s	fitness: 93770
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 27 
+p55 27 => time: 37.48076772689819 s	fitness: 100874
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 28 
+p55 28 => time: 37.43984389305115 s	fitness: 97999
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 29 
+p55 29 => time: 33.73681926727295 s	fitness: 94465
+
+C:\Users\rodri\Documents\com936\otimizacao>python main.py p55 30 
+p55 30 => time: 34.06701135635376 s	fitness: 86738

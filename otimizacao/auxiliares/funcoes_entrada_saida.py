@@ -1,3 +1,4 @@
+from auxiliares.funcoes_auxiliares import formata_solucao
 
 def entrada_dados(dados_clientes, dados_plantas, caminho):
     with open(caminho, 'r') as f:
@@ -39,14 +40,12 @@ def entrada_dados(dados_clientes, dados_plantas, caminho):
             [dados_plantas['posicao'].append(i)]
 
 
-def saida_dados(text, tipo):
-    np.savetxt('saidas/result_%s.txt' % tipo, text, fmt="%s")
-    return
-
-
-def saida_dados_format(result):
-    file = open("saidas/result_solucoes.txt","w")
+def saida_dados_format(solucao,dados_plantas,inst,seed):
+    result = formata_solucao(solucao,dados_plantas)
+    file = open("saidas/result_"+inst+"-seed_"+seed+".txt","w")
+    file.write("Instalações : Clientes \n")
     for i in range(0,len(result)):
         file.write("%d : %s \n" %(i, result[i] ))
+    file.write("fitness : %d \n" %(solucao['total']))
     file.close()
     return

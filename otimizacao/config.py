@@ -1,28 +1,17 @@
 import random as random
 
-inst = "p55"
-
-caminho = "../dataset/" + inst + ".txt"
+caminho = "../dataset/"
 
 solucao = {
     'instalacao': [],
     'custo': [],
-    'total' : int
+    'total' : int,
+    'uso_demanda': []
 }
 
+#valores padrões
 validade_tabu = 20
 max_int_tabu = 400
-
-# Possiveis
-#   'gulosa'
-#   'aleatoria'
-#   'hibrida'
-
-random.seed(5)
-
-estrategia = 'gulosa'
-
-estrategias = ['gulosa']
-
-erros_solucao = []
+max_int_pso = 30
+num_particulas = 1500 #1500 min
 
