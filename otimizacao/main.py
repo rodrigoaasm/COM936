@@ -15,17 +15,26 @@ from sol_populacional.pso import *
 if __name__ == '__main__':
 
     #recebendo parâmetros
-    inst = sys.argv[1]  
-    seed = sys.argv[2]    
-    try:                
-        num_particulas = int(sys.argv[3])
-        max_int_pso = int(sys.argv[4])
+    dataset = sys.argv[1]
+    inst = sys.argv[2]
+    seed = sys.argv[3]
+    try:
+        num_particulas = int(sys.argv[4])
+        max_int_pso = int(sys.argv[5])
     except:
-        no_arg = True        
-        
-    caminho = "../dataset/"+inst+".txt"
-    random.seed(seed)
+        no_arg = True
 
+    #filtrando datasets
+    if dataset == '1':
+        caminho = "../dataset/" + inst + ".txt"
+    elif dataset == '2':
+        caminho = "../datasets/Holmberg_Instances/"+inst
+    elif dataset == '3':
+        caminho = "../datasets/OR-Library_Instances/"+inst
+    elif dataset == '4':
+        caminho = "../datasets/Yang_Instances/" + inst + ".dat"
+
+    random.seed(seed)
     #lendo datasets
     dados_clientes, dados_plantas, solucao = zera_vetores()
     entrada_dados(dados_clientes,dados_plantas, caminho)
