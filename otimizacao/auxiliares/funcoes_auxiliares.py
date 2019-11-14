@@ -1,6 +1,6 @@
 import sys
 import traceback
-
+import re
 import numpy as np
 from config import * 
 
@@ -181,4 +181,8 @@ def print_error():
 
     print(traceback.format_exc())
     print(traceback_template % traceback_details)
+
+def _formata_linha(linha):
+    linha = re.sub('\.', '', linha)
+    return linha.split()
 
