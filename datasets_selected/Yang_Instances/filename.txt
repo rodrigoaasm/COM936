@@ -1,0 +1,21 @@
+python main.py 4 30-200-1.dat 30
+python main.py 4 30-200-2.dat 30
+python main.py 4 30-200-3.dat 30
+python main.py 4 30-200-4.dat 30
+python main.py 4 30-200-5.dat 30
+python main.py 4 60-200-1.dat 30
+python main.py 4 60-200-2.dat 30
+python main.py 4 60-200-3.dat 30
+python main.py 4 60-200-4.dat 30
+python main.py 4 60-200-5.dat 30
+python main.py 4 60-300-1.dat 30
+python main.py 4 60-300-2.dat 30
+python main.py 4 60-300-3.dat 30
+python main.py 4 60-300-4.dat 30
+python main.py 4 60-300-5.dat 30
+python main.py 4 80-400-1.dat 30
+python main.py 4 80-400-2.dat 30
+python main.py 4 80-400-3.dat 30
+python main.py 4 80-400-4.dat 30
+python main.py 4 80-400-5.dat 30
+

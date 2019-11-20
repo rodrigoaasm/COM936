@@ -26,13 +26,13 @@ if __name__ == '__main__':
 
     #filtrando datasets
     if dataset == '1':
-        caminho = "../dataset/" + inst + ".txt"
+        caminho = "../datasets-all/" + inst + ".txt"
     elif dataset == '2':
-        caminho = "../datasets/Holmberg_Instances/"+inst
+        caminho = "../datasets-all/Holmberg_Instances/"+inst
     elif dataset == '3':
-        caminho = "../datasets/OR-Library_Instances/"+inst
+        caminho = "../datasets-all/OR-Library_Instances/"+inst
     elif dataset == '4':
-        caminho = "../datasets/Yang_Instances/" + inst + ".dat"
+        caminho = "../datasets-all/Yang_Instances/" + inst + ".dat"
 
     random.seed(seed)
     #lendo datasets
