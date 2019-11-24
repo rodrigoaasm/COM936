@@ -95,6 +95,7 @@ def le_formato_2(dados_clientes, dados_plantas, data, header_1, header_2):
                 custo_clientes[pos][i] = float(planta)
 
     dados_clientes['custo'] = custo_clientes
+    
 
 
 def le_formato_3(dados_clientes, dados_plantas, data, header_1, header_2):
@@ -121,7 +122,7 @@ def le_formato_3(dados_clientes, dados_plantas, data, header_1, header_2):
         cliente = data.pop(0)
         cliente = cliente.split()
         for j in range(0, n_clientes):
-            custo_clientes[j][i] = cliente[j]
+            custo_clientes[j][i] = float(cliente[j])
 
     dados_clientes['custo'] = custo_clientes
 
